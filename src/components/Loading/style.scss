@@ -1,0 +1,84 @@
+.gx-loader-view {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.gx-loader-view .ant-spin {
+  margin: 0;
+}
+.custom-modal-v1 .gx-loader-view {
+  height: calc(100vh - 40vh) !important;
+}
+.page-loader-up .gx-loader-view {
+  height: calc(100vh - 50vh) !important;
+}
+.gx-app-module .gx-loader-view {
+  height: calc(100vh - 266px) !important;
+}
+.framed-layout .gx-app-module .gx-loader-view {
+  height: calc(100vh - 266px - 2 * 20px) !important;
+}
+@media screen and (max-width: 991px) {
+  .gx-app-module .gx-loader-view {
+    height: calc(100vh - 238px) !important;
+  }
+  .framed-layout .gx-app-module .gx-loader-view {
+    height: calc(100vh - 238px) !important;
+  }
+}
+@media screen and (max-width: 575px) {
+  .gx-app-module .gx-loader-view {
+    height: calc(100vh - 244px) !important;
+  }
+}
+.gx-chat-module .gx-loader-view {
+  height: calc(100vh - 122px) !important;
+}
+.framed-layout .gx-chat-module .gx-loader-view {
+  height: calc(100vh - 122px - 2 * 20px) !important;
+}
+@media screen and (max-width: 991px) {
+  .framed-layout .gx-chat-module .gx-loader-view {
+    height: calc(100vh - 122px) !important;
+  }
+}
+@media screen and (max-width: 575px) {
+  .gx-chat-module .gx-loader-view {
+    height: calc(100vh - 100px) !important;
+  }
+}
+.gx-loader-position {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 999;
+  bottom: 0;
+}
+.css-1ryg6ao-BallClipRotatePulse {
+  transform: scale(1.5) !important;
+}
+
+.chip-loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}

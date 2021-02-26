@@ -1,0 +1,33 @@
+.right-side-menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & li {
+    padding: 10px;
+    list-style: none;
+  }
+  & .right-side-icons {
+    font-size: 30px;
+    font-weight: bolder;
+    color: #062D40;
+    cursor: pointer;
+  }
+  & .excel {
+    color: #1d6f42 !important;
+  }
+  & .deliver {
+    color: #b83d0f !important;
+  }
+  & .pdf {
+    color: #f40f02 !important;
+  }
+  & .update-status {
+    color: #fbbc05 !important;
+  }
+  & .filter-data {
+    color: #0018f9 !important;
+  } 
+  & .addnew {
+    color: #062D40 !important;
+  }
+}

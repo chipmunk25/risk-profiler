@@ -1,0 +1,47 @@
+.base-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & img {
+      width: 200px;
+    }
+    h3 {
+      font-size: 34px;
+      font-family: "Open Sans", sans-serif;
+      padding-top: 20px;
+      font-weight: bolder;
+      color: #062d40;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    .image {
+      width: 21em;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .cs-login-form {
+      margin-top: 2em;
+      & .button-div {
+        display: flex;
+        justify-content: flex-start;
+      }
+      & .login-btn {
+        background-color: #062D40;
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.ant-layout-sider {
+  background: #062d40 !important;
+  & .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 16px;
+  }
+  & .sidebar-menu-container {
+    background: #062d40;
+  }
+  & .menu-trigger {
+    color: white;
+  }
+  & .gx-layout-sider-dark {
+    color: #97b8c7 !important;
+  }
+  & .ant-menu-item .anticon,
+  .ant-menu-submenu-title .anticon {
+    font-size:larger;
+  }
+}
+
+.gx-mini-sidebar {
+  & .ant-menu-item .anticon,
+  .ant-menu-submenu-title .anticon {
+    margin-right: 40px;
+  }
+  & .ant-menu-submenu-vertical .anticon {
+    font-size: 20px;
+  }
+}
