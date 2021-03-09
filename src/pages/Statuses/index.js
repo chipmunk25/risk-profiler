@@ -138,6 +138,10 @@ const Statuses = () => {
                         title: 'Text Color',
                         dataIndex: 'textColor',
                         key: 'textColor',
+                    },{
+                        title: 'Next of Action',
+                        dataIndex: 'description',
+                        key: 'description',
                     },
                     {
                         title: 'Action',

@@ -14,5 +14,5 @@ const root = () => {
             'Content-Type': 'application/json'
         },
     });
-}
+} 
 export default root

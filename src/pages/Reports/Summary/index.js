@@ -1,4 +1,4 @@
-import React, { useEffect,useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Row, Col, Select, Button } from "antd"
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,7 +7,7 @@ import ReportPrint from "../PrintPage"
 import ReactToPrint from 'react-to-print';
 
 import { PrinterOutlined } from '@ant-design/icons';
-import { showAuthLoader, hideAuthLoader,  } from "appRedux/Actions/common"
+import { showAuthLoader, hideAuthLoader, } from "appRedux/Actions/common"
 import { requestGetBranch, } from "appRedux/Actions/auth"
 import { requestGetProfilerSummary, } from "appRedux/Actions/indicator"
 import Widget from "components/Widget";
@@ -30,9 +30,8 @@ const RiskSummary = () => {
                 del_flg: 0, company_id: user.company_id,
             }
         ))
-
     }
-    console.log(profilerSummaryLists)
+  
     return (
         <div>
             <Row>
@@ -49,23 +48,26 @@ const RiskSummary = () => {
                                             <Option key={item.id} value={item.id}>{item.branch_name}</Option>
                                         </React.Fragment>))}
                                 </Select>
-                                
-                                <Button type="primary" onClick={GetDataHandler}>
-                                    GetData
+
+                                <div className="gx-ml-3">
+                                    <Button type="primary" className="gx-btn-geekblue" onClick={GetDataHandler}>
+                                        GetData
                                 </Button>
+                                </div>
+
                                 <ReactToPrint
-                                trigger={() => <div className="text-right">
-                                    <Button type="primary" id="printInvoice" className="btn btn-info" 
-                                    disabled={profilerSummaryLists.length === 0}><PrinterOutlined /> Print</Button>
-                                </div>}
-                                content={() => componentRef.current}
-                            />
+                                    trigger={() => <div className="text-right">
+                                        <Button type="primary" id="printInvoice" className="btn btn-info"
+                                            disabled={profilerSummaryLists.length === 0}><PrinterOutlined /> Print</Button>
+                                    </div>}
+                                    content={() => componentRef.current}
+                                />
                             </div>
                         </div>
                     </Widget>
                 </Col>
                 <Col span={24}>
-                <ReportPrint  details={profilerSummaryLists} ref={componentRef} />
+                    <ReportPrint reportTitle="Risk Profiler Summary" details={profilerSummaryLists} ref={componentRef} />
                 </Col>
             </Row>
         </div>

@@ -7,6 +7,8 @@ const tailLayout = {
         span: 12,
     },
 };
+
+const { TextArea } = Input;
 const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader }) => {
     const [form] = Form.useForm();
     useEffect(() => {
@@ -16,6 +18,7 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader }) => {
             rating_upper: detail.rating_upper,
             bgColor: detail.bgColor,
             textColor: detail.textColor,
+            description: detail.description,
         });
         setTimeout(() => {
             hideModalLoader()
@@ -41,7 +44,7 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader }) => {
                 >
                     <InputNumber style={{ width: '100%' }} placeholder="Rating Upper" allowClear />
                 </Form.Item>
-                
+
                 <Form.Item label="BG Color" name="bgColor"
                     rules={[{ required: true, message: 'Please Enter Background Color', },]}
                 >
@@ -54,7 +57,13 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader }) => {
                     <Input placeholder="Text Color" allowClear />
                 </Form.Item>
 
-                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+                <Form.Item label="Next of Action" name="description"
+                >
+                    <TextArea allowClear placeholder="Next of Action" autoSize={{ minRows: 5, maxRows: 10 }} />
+
+                </Form.Item>
+
+                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                     <Button type="primary" htmlType="submit">
                         <SaveOutlined />  Update
                  </Button>

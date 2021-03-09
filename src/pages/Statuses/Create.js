@@ -7,6 +7,7 @@ const tailLayout = {
         span: 12,
     },
 };
+const { TextArea } = Input;
 
 const Create = ({ onFinish, onFinishFailed, hideModalLoader }) => {
     useEffect(() => {
@@ -28,12 +29,12 @@ const Create = ({ onFinish, onFinishFailed, hideModalLoader }) => {
                 <Form.Item label="Rating Lower" name="rating_lower"
                     rules={[{ required: true, message: 'Please Enter Rating Lower', },]}
                 >
-                    <InputNumber style={{width:'100%'}} placeholder="Rating Lower" allowClear />
+                    <InputNumber style={{ width: '100%' }} placeholder="Rating Lower" allowClear />
                 </Form.Item>
                 <Form.Item label="Rating Upper" name="rating_upper"
                     rules={[{ required: true, message: 'Please Enter Rating Upper', },]}
                 >
-                    <InputNumber style={{width:'100%'}} placeholder="Rating Upper" allowClear />
+                    <InputNumber style={{ width: '100%' }} placeholder="Rating Upper" allowClear />
                 </Form.Item>
 
                 <Form.Item label="BG Color" name="bgColor"
@@ -47,8 +48,13 @@ const Create = ({ onFinish, onFinishFailed, hideModalLoader }) => {
                 >
                     <Input placeholder="Text Color" allowClear />
                 </Form.Item>
+                <Form.Item label="Next of Action" name="description"
+                >
+                    <TextArea allowClear placeholder="Next of Action" autoSize={{ minRows: 5, maxRows: 10 }} />
 
-                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+                </Form.Item>
+
+                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                     <Button type="primary" htmlType="submit">
                         <SaveOutlined />  Save
                  </Button>
