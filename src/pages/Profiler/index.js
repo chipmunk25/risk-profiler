@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Row, Col, Tag, Button, message } from 'antd';
+import { Select, Row, Col, Tag, Button, message, Alert } from 'antd';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -162,14 +162,14 @@ const CustomerProfiler = () => {
 
                             </Widget>
                         </Col>
-                        <Col span={24}>
+                        <Col span={24} className="profiler-card">
                             <div >
                                 {
                                     statusLists && _.sortBy(statusLists, "rating_lower").map((item, index) => (
-                                        <div style={{display:'flex',justifyContent:'space-between'}}>
-                                           <h1 className={`gx-fs-xl gx-font-weight-bold gx-text-geekblue`}> Above {item.rating_lower} to {item.rating_upper}:</h1>
-                                        <Tag key={index} className={`gx-text-${item.textColor} gx-bg-${item.bgColor} gx-fs-2xl`}>{item.status_name}
-                                       </Tag>
+                                        <div key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <h1 className={`gx-fs-xl gx-font-weight-bold gx-text-geekblue`}> Above {item.rating_lower} to {item.rating_upper}:</h1>
+                                            <Tag key={index} className={`gx-text-${item.textColor} gx-bg-${item.bgColor} gx-fs-2xl`}>{item.status_name}
+                                            </Tag>
                                         </div>
                                     ))
                                 }
@@ -181,9 +181,12 @@ const CustomerProfiler = () => {
                                     RatingCheck(statusLists, CalcProfValue(state.profiler)).bgColor : "white"}
                                 title={CalcProfValue(state.profiler)}
                             />
+                            <div>
+                                <Alert message={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
+                                    RatingCheck(statusLists, CalcProfValue(state.profiler)).description : "Next Action After Assessment"} type="info" showIcon />
+                            </div>
                         </Col>
                     </Row>
-
                 </Col>
                 <Col span={16}>
 

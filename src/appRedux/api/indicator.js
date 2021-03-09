@@ -38,6 +38,82 @@ export function* RemoveIndicatorType(token, id) {
     }
 }
 
+export function* getReviewFromApi(token, { company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+
+    try {
+        return yield API().get(`/indicators/${del_flg}/review`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* CreateReview(token, data) {
+    try {
+        return yield API().post(`/indicators/review`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* ChangeReview(token, data) {
+    try {
+        return yield API().patch(`/indicators/review/${data.id}`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* RemoveReview(token, id) {
+    try {
+        return yield API().delete(`/indicators/review/${id}/soft`, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* getCustomerReviewFromApi(token, { company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+
+    try {
+        return yield API().get(`/indicators/${del_flg}/custreview`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* CreateCustomerReview(token, data) {
+    try {
+        return yield API().post(`/indicators/custreview`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* ChangeCustomerReview(token, data) {
+    try {
+        return yield API().patch(`/indicators/custreview/${data.id}`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* RemoveCustomerReview(token, id) {
+    try {
+        return yield API().delete(`/indicators/custreview/${id}/soft`, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
 export function* getCustomerProfilerFromApi(token, { company_id, del_flg }) {
     const params = new URLSearchParams();
     params.append('company_id', company_id)

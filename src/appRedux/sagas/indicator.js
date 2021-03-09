@@ -5,7 +5,8 @@ import {
     getIndicatorMappingFromApi, CreateIndicatorMapping, ChangeIndicatorMapping, RemoveIndicatorMapping,
     getDescriptionFromApi, CreateDescription, ChangeDescription, RemoveDescription,
     getCustomerProfilerFromApi, CreateCustomerProfiler, ChangeCustomerProfiler, RemoveCustomerProfiler,
-    getCustomerProfilerSummaryFromApi,
+    getCustomerProfilerSummaryFromApi,RemoveReview,ChangeReview,CreateReview,getReviewFromApi,
+    RemoveCustomerReview,ChangeCustomerReview,CreateCustomerReview,getCustomerReviewFromApi,
 } from "../api/indicator"
 
 import {
@@ -14,7 +15,8 @@ import {
     successGetIndicatorMapping, successSaveIndicatorMapping, successUpdateIndicatorMapping, successDeleteIndicatorMapping,
     successGetDescription, successSaveDescription, successUpdateDescription, successDeleteDescription,
     successDeleteProfiler, successUpdateProfiler, successSaveProfiler, successGetProfiler, successGetProfilerSummary,
-
+    successDeleteReview,successUpdateReview,successSaveReview,successGetReview,
+    successDeleteCustomerReview,successUpdateCustomerReview,successSaveCustomerReview,successGetCustomerReview,
 } from "../Actions/indicator"
 import {
     REQUEST_GET_INDICATORTYPE, REQUEST_SAVE_INDICATORTYPE, REQUEST_UPDATE_INDICATORTYPE, REQUEST_DELETE_INDICATORTYPE,
@@ -22,7 +24,8 @@ import {
     REQUEST_GET_INDICATORMAPPING, REQUEST_SAVE_INDICATORMAPPING, REQUEST_UPDATE_INDICATORMAPPING, REQUEST_DELETE_INDICATORMAPPING,
     REQUEST_GET_DESCRIPTION, REQUEST_SAVE_DESCRIPTION, REQUEST_UPDATE_DESCRIPTION, REQUEST_DELETE_DESCRIPTION,
     REQUEST_DELETE_PROFILER, REQUEST_UPDATE_PROFILER, REQUEST_SAVE_PROFILER, REQUEST_GET_PROFILER,
-    REQUEST_GET_PROFILERSUMMARY,
+    REQUEST_GET_PROFILERSUMMARY,REQUEST_DELETE_REVIEW,REQUEST_UPDATE_REVIEW,REQUEST_SAVE_REVIEW,REQUEST_GET_REVIEW,
+    REQUEST_DELETE_CUSTOMERREVIEW,REQUEST_UPDATE_CUSTOMERREVIEW,REQUEST_SAVE_CUSTOMERREVIEW,REQUEST_GET_CUSTOMERREVIEW
 } from "../Actions/constants"
 
 
@@ -77,6 +80,113 @@ function* DeleteIndicatorTypeHandler({ payload }) {
     yield put(hideModal())
     if (indicator.status === 201) {
         yield put(successDeleteIndicatorType(indicator.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Deleted Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicator.error)
+    }
+}
+
+function* GetCustomerReviewHandler({ payload }) {
+    let indicator;
+
+    indicator = yield call(getCustomerReviewFromApi, sessionStorage.getItem('token'), payload)
+
+    yield put(hideAuthLoader())
+    if (indicator.status === 200) {
+        yield put(successGetCustomerReview({ customerReviewLists: indicator.data.indicators }))
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicator.error)
+    }
+}
+
+function* SaveCustomerReviewHandler({ payload }) {
+    const indicators = yield call(CreateCustomerReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicators.status === 201) {
+        yield put(successSaveCustomerReview(indicators.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Saved Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicators.error)
+    }
+}
+
+function* UpdateCustomerReviewHandler({ payload }) {
+    const indicators = yield call(ChangeCustomerReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicators.status === 201) {
+        yield put(successUpdateCustomerReview(indicators.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Updated Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicators.error)
+    }
+}
+
+function* DeleteCustomerReviewHandler({ payload }) {
+    const indicator = yield call(RemoveCustomerReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicator.status === 201) {
+        yield put(successDeleteCustomerReview(indicator.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Deleted Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicator.error)
+    }
+}
+
+
+function* GetReviewHandler({ payload }) {
+    let indicator;
+
+    indicator = yield call(getReviewFromApi, sessionStorage.getItem('token'), payload)
+
+    yield put(hideAuthLoader())
+    if (indicator.status === 200) {
+        yield put(successGetReview({ reviewLists: indicator.data.indicators }))
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicator.error)
+    }
+}
+
+function* SaveReviewHandler({ payload }) {
+    const indicators = yield call(CreateReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicators.status === 201) {
+        yield put(successSaveReview(indicators.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Saved Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicators.error)
+    }
+}
+
+function* UpdateReviewHandler({ payload }) {
+    const indicators = yield call(ChangeReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicators.status === 201) {
+        yield put(successUpdateReview(indicators.data.indicators))
+        openNotificationWithIcon("success", 'Success', 'Record Updated Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicators.error)
+    }
+}
+
+function* DeleteReviewHandler({ payload }) {
+    const indicator = yield call(RemoveReview, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (indicator.status === 201) {
+        yield put(successDeleteReview(indicator.data.indicators))
         openNotificationWithIcon("success", 'Success', 'Record Deleted Successfully')
     }
     else {
@@ -312,6 +422,8 @@ function* DeleteCustomerProfilerHandler({ payload }) {
 
 function* LoadWatchers() {
     yield takeEvery(REQUEST_GET_INDICATORTYPE, GetIndicatorTypeHandler)
+    yield takeEvery(REQUEST_GET_CUSTOMERREVIEW, GetCustomerReviewHandler)
+    yield takeEvery(REQUEST_GET_REVIEW, GetReviewHandler)
     yield takeEvery(REQUEST_GET_DESCRIPTION, GetDescriptionHandler)
     yield takeEvery(REQUEST_GET_INDICATORMAPPING, GetIndicatorMappingHandler)
     yield takeEvery(REQUEST_GET_INDICATOR, GetIndicatorHandler)
@@ -324,6 +436,15 @@ export function* ActionWatchers() {
     yield takeEvery(REQUEST_SAVE_INDICATORTYPE, SaveIndicatorTypeHandler)
     yield takeEvery(REQUEST_UPDATE_INDICATORTYPE, UpdateIndicatorTypeHandler)
     yield takeEvery(REQUEST_DELETE_INDICATORTYPE, DeleteIndicatorTypeHandler)
+
+    yield takeEvery(REQUEST_SAVE_CUSTOMERREVIEW, SaveCustomerReviewHandler)
+    yield takeEvery(REQUEST_UPDATE_CUSTOMERREVIEW, UpdateCustomerReviewHandler)
+    yield takeEvery(REQUEST_DELETE_CUSTOMERREVIEW, DeleteCustomerReviewHandler)
+
+    yield takeEvery(REQUEST_SAVE_REVIEW, SaveReviewHandler)
+    yield takeEvery(REQUEST_UPDATE_REVIEW, UpdateReviewHandler)
+    yield takeEvery(REQUEST_DELETE_REVIEW, DeleteReviewHandler)
+
     yield takeEvery(REQUEST_SAVE_PROFILER, SaveCustomerProfilerHandler)
     yield takeEvery(REQUEST_UPDATE_PROFILER, UpdateCustomerProfilerHandler)
     yield takeEvery(REQUEST_DELETE_PROFILER, DeleteCustomerProfilerHandler)

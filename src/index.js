@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import NextApp from './NextApp';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 
 
 const render = Component => {
@@ -13,7 +13,7 @@ const render = Component => {
 }
 
 // Do this once
-registerServiceWorker();
+//registerServiceWorker();
 //registerServiceWorker(); 
 reportWebVitals();
 // Render once
