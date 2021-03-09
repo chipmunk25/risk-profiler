@@ -2,21 +2,23 @@ import { all, call, fork, put, takeLatest, takeEvery } from "redux-saga/effects"
 
 import {
     SIGNIN_USER, SIGNOUT_USER, REQUEST_UPDATEPASSWORD, REQUEST_UPDATEUSER, REQUEST_GET_BRANCH, REQUEST_DELETE_USER,
-    REQUEST_GET_USERS, REQUEST_RESETPASSWORD, REQUEST_DELETE_BRANCH, REQUEST_UPDATE_BRANCH, REQUEST_SAVE_BRANCH, REQUEST_GET_ROLE, REQUEST_SAVE_USER, REQUEST_UPDATEUSERS,
-    REQUEST_SMSBAL,
-
+    REQUEST_GET_USERS, REQUEST_RESETPASSWORD, REQUEST_DELETE_BRANCH, REQUEST_UPDATE_BRANCH, REQUEST_SAVE_BRANCH,
+    REQUEST_SAVE_USER, REQUEST_UPDATEUSERS,
+    REQUEST_SAVE_PERMISSION, REQUEST_GET_ROLE, REQUEST_UPDATE_PERMISSION, REQUEST_DELETE_PERMISSION,
+    REQUEST_GET_PERMISSION, REQUEST_SAVE_ROLE, REQUEST_UPDATE_ROLE, REQUEST_DELETE_ROLE,
 } from "../Actions/constants"
 import {
     signInUserSuccess, signOutUserSuccess, successGetBranch, successUpdatePassword, successUpdateUser, successUpdateUsers,
     successGetUsers, successResetPassword, successDeleteBranch, successUpdateBranch, successSaveBranch,
-    successGetRole, successSaveUser, successDeleteUser, CheckSMSBalSuccess
+    successGetRole, successSaveUser, successDeleteUser, successDeletePermission, successUpdatePermission,
+    successSavePermission, successGetPermission, successUpdateRole, successDeleteRole, successSaveRole,
 
 } from "../Actions/auth"
 import { hideAuthLoader, hideModal } from "../Actions/common"
 import {
     Login, Logout, UpdatePassword, UpdateUser, getBranchesFromApi, getUsersFromApi,
     ResetPswd, CreateBranch, ChangeBranch, RemoveBranch, getRoleFromApi, CreateUser, RemoveUser,
-    getSMSBalFromApi,
+    CreateRole, ChangeRole, RemoveRole, getPermissionFromApi, CreatePermission, ChangePermission, RemovePermission
 } from "../api/users"
 import jwtDecode from "jwt-decode"
 import AlertMessage from "components/Alert/message"
@@ -142,21 +144,6 @@ function* UpdateUsersInfoHandler({ payload }) {
 }
 
 
-
-
-function* SMSBalHandler() {
-    let company = yield call(getSMSBalFromApi, sessionStorage.getItem('token'))
-    if (company) {
-        if (company.status === 200) {
-            yield put(CheckSMSBalSuccess({ smsbal: company.data.balance }))
-            yield put(hideAuthLoader())
-        } else {
-            openNotificationWithIcon('error', 'Error', company.error)
-        }
-    } else {
-        openNotificationWithIcon('error', 'Internet Error', "Check your Internet, Cannot Load Information Due to No Internet")
-    }
-}
 function* GetUsersHandler({ payload }) {
     let company = yield call(getUsersFromApi, sessionStorage.getItem('token'), payload)
     // console.log(company)
@@ -285,6 +272,130 @@ function* DeleteUserHandler({ payload }) {
     }
 }
 
+function* GetRoleHandler({ payload }) {
+    let users = yield call(getRoleFromApi, sessionStorage.getItem('token'), payload)
+
+    if (users) {
+        if (users.status === 200) {
+            yield put(successGetRole({
+                roleLists: users.data.roles,
+            }));
+            yield put(hideAuthLoader())
+        } else {
+            openNotificationWithIcon('error', 'Error', users.error)
+        }
+    } else {
+        openNotificationWithIcon('error', 'Internet Error', "Check your Internet, Cannot Load Information Due to No Internet")
+    }
+}
+
+
+function* SaveRoleHandler({ payload }) {
+    // console.log(payload)
+    const users = yield call(CreateRole, sessionStorage.getItem('token'), payload)
+    // console.log(users)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successSaveRole(users.data.role))
+        openNotificationWithIcon("success", 'Success', 'Record Saved Successfully')
+    } else if (users.status === 422) {
+        openNotificationWithIcon('error', 'Error', users.data.message)
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+function* UpdateRoleHandler({ payload }) {
+    const users = yield call(ChangeRole, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successUpdateRole(users.data.role))
+        openNotificationWithIcon("success", 'Success', 'Record Updated Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+function* DeleteRoleHandler({ payload }) {
+    const users = yield call(RemoveRole, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successDeleteRole(users.data.role))
+        openNotificationWithIcon("success", 'Success', 'Record Deleted Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+
+function* GetPermissionHandler({ payload }) {
+    let users = yield call(getPermissionFromApi, sessionStorage.getItem('token'), payload)
+    //  console.log(users) 
+    if (users) {
+        if (users.status === 200) {
+            yield put(successGetPermission({
+                permissionLists: users.data.permissions,
+            }));
+            yield put(hideAuthLoader())
+        } else {
+            openNotificationWithIcon('error', 'Error', users.error)
+        }
+    } else {
+        openNotificationWithIcon('error', 'Internet Error', "Check your Internet, Cannot Load Information Due to No Internet")
+    }
+}
+
+
+function* SavePermissionHandler({ payload }) {
+    // console.log(payload)
+    const users = yield call(CreatePermission, sessionStorage.getItem('token'), payload)
+    //  console.log(users) 
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successSavePermission(users.data.permission))
+        openNotificationWithIcon("success", 'Success', 'Record Saved Successfully')
+    } else if (users.status === 422) {
+        openNotificationWithIcon('error', 'Error', users.data.message)
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+function* UpdatePermissionHandler({ payload }) {
+    const users = yield call(ChangePermission, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successUpdatePermission(users.data.permission))
+        openNotificationWithIcon("success", 'Success', 'Record Updated Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+function* DeletePermissionHandler({ payload }) {
+    const users = yield call(RemovePermission, sessionStorage.getItem('token'), payload)
+    yield put(hideAuthLoader())
+    yield put(hideModal())
+    if (users.status === 201) {
+        yield put(successDeletePermission(users.data.permission))
+        openNotificationWithIcon("success", 'Success', 'Record Deleted Successfully')
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', users.error)
+    }
+}
+
+
 
 
 
@@ -304,7 +415,6 @@ export function* UsersWatcher() {
     yield takeEvery(REQUEST_UPDATEUSER, UpdateUserInfoHandler)
     yield takeEvery(REQUEST_UPDATEUSERS, UpdateUsersInfoHandler)
     yield takeEvery(REQUEST_GET_USERS, GetUsersHandler)
-    yield takeEvery(REQUEST_SMSBAL, SMSBalHandler)
     yield takeEvery(REQUEST_GET_BRANCH, GetBranchHandler)
     yield takeEvery(REQUEST_GET_ROLE, GetRolesHandler)
     yield takeEvery(REQUEST_SAVE_BRANCH, SaveBranchHandler)
@@ -314,11 +424,31 @@ export function* UsersWatcher() {
     yield takeEvery(REQUEST_DELETE_USER, DeleteUserHandler)
 }
 
+function* LoadWatchers() {
+    yield takeEvery(REQUEST_GET_ROLE, GetRoleHandler)
+    yield takeEvery(REQUEST_GET_PERMISSION, GetPermissionHandler)
+}
+
+
+export function* ActionWatchers() {
+    yield takeEvery(REQUEST_SAVE_ROLE, SaveRoleHandler)
+    yield takeEvery(REQUEST_UPDATE_ROLE, UpdateRoleHandler)
+    yield takeEvery(REQUEST_DELETE_ROLE, DeleteRoleHandler)
+
+    yield takeEvery(REQUEST_SAVE_PERMISSION, SavePermissionHandler)
+    yield takeEvery(REQUEST_UPDATE_PERMISSION, UpdatePermissionHandler)
+    yield takeEvery(REQUEST_DELETE_PERMISSION, DeletePermissionHandler)
+
+
+}
+
 export default function* rootSaga() {
     yield all([
         fork(signInUser),
         fork(signOutUser),
         fork(UsersWatcher),
+        fork(LoadWatchers),
+        fork(ActionWatchers),
 
     ]);
 }

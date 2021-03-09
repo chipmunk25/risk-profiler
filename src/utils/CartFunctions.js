@@ -1,51 +1,45 @@
 let index, newlist
 export const onAddItem = (state, payload) => {
-    // // console.log(state, payload)
     return {
-        ...state, cartList: [...state.cartList, { ...payload }]
+        ...state, profiler: [...state.profiler, { ...payload, indicator_description_map_id: payload.id }]
     }
 }
 export const onAddItems = (state, payload) => {
-    // console.log(state.cartList, payload)
     return {
         ...state,
-        cartList: [...state.cartList, ...payload]
+        profiler: [...state.profiler, ...payload]
     }
 }
 
 export const onItemExist = (state, payload) => {
-    return state.cartList.find(item => parseInt(payload.product_id) === parseInt(item.product_id)
+    return state.profiler.find(item => parseInt(payload.indicator_id) === parseInt(item.indicator_id)
+        //  && parseInt(payload.description_id) === parseInt(item.description_id)
     )
 }
 
 
 export const onUpdateItem = (state, payload) => {
-    index = state.cartList.indexOf(onItemExist(state, payload))
-    newlist = [...state.cartList];
-    if (index > -1) {
-        /*   newlist[index].product_id = payload.product_id;
-          newlist[index].unit_id = payload.unit_id;
-          newlist[index].quantity = payload.quantity;
-          newlist[index].cost_price = payload.cost_price;
-          newlist[index].customer_price = payload.customer_price;
-          newlist[index].selling_price = payload.selling_price;
-          newlist[index].total_cost = payload.cost_price * payload.quantity;
-          newlist[index].total_amount = payload.selling_price * payload.quantity;
-          newlist[index].customer_amount = payload.customer_price * payload.quantity; */
-        newlist[index] = payload
+    index = state.profiler.indexOf(onItemExist(state, payload))
+    newlist = [...state.profiler];
+    const newpayload = {
+        ...payload,
+         indicator_description_map_id: payload.id 
     }
-    return { ...state, cartList: newlist }
+    if (index > -1) {
+        newlist[index] = newpayload
+    }
+    return { ...state, profiler: newlist }
 }
 
 export const onRemoveItem = (state, payload) => {
     return {
         ...state,
-        cartList: state.cartList.filter((item) => item.product_id !== payload.product_id),
+        profiler: state.profiler.filter((item) => item.product_id !== payload.product_id),
     };
 }
 export const onRemoveAll = (state) => {
     return {
         ...state,
-        cartList: [],
+        profiler: [],
     };
 }

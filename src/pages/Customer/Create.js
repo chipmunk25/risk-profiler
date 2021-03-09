@@ -12,10 +12,9 @@ const tailLayout = {
 const { TextArea } = Input;
 const { Option } = Select;
 
-const Create = ({ onFinish, onFinishFailed, hideModalLoader }) => {
+const Create = ({ onFinish, onFinishFailed, hideModalLoader,branchLists }) => {
 
-    const { customerTypeLists } = useSelector(({ people }) => people);
-    useEffect(() => {
+     useEffect(() => {
         setTimeout(() => {
             hideModalLoader()
         }, 1500);
@@ -25,22 +24,32 @@ const Create = ({ onFinish, onFinishFailed, hideModalLoader }) => {
         <div>
             <Form name="Add" onFinish={onFinish} onFinishFailed={onFinishFailed} size="large"
                 labelCol={{ span: 6, }} wrapperCol={{ span: 16, }}>
-                <Form.Item label="Customer Type" name="customer_type_id"
-                    rules={[{ required: true, message: 'Please Select Customer Type', },]}
+                <Form.Item label="Branch" name="branch_id"
+                    rules={[{ required: true, message: 'Please Select Branch', },]}
                 >
-                    <Select  showSearch placeholder="Select Customer Type" optionFilterProp="children"
+                    <Select  showSearch placeholder="Select Branch" optionFilterProp="children"
                         filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         style={{ width: '100%' }} >
-                        {customerTypeLists && customerTypeLists.map((item, index) => (
+                        {branchLists && branchLists.map((item, index) => (
                             <React.Fragment key={index}>
-                                <Option key={item.id} value={item.id}>{item.customer_type}</Option>
+                                <Option key={item.id} value={item.id}>{item.branch_name}</Option>
                             </React.Fragment>))}
                     </Select>
+                </Form.Item>
+                <Form.Item label="Customer No" name="customer_no"
+                    rules={[{ required: true, message: 'Please Enter Customer No', },]}
+                >
+                    <Input placeholder="Customer No" allowClear />
                 </Form.Item>
                 <Form.Item label="Customer" name="customer"
                     rules={[{ required: true, message: 'Please Enter Customer', },]}
                 >
                     <Input placeholder="Customer" allowClear />
+                </Form.Item>
+                <Form.Item label="Account No" name="account_no"
+                    rules={[{ required: true, message: 'Please Enter Account No', },]}
+                >
+                    <Input placeholder="Account No" allowClear />
                 </Form.Item>
                 <Form.Item label="Telephone" name="telephone"
                     rules={[{ required: true, message: 'Please Enter Telephone', },]}

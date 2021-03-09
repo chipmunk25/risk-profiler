@@ -13,7 +13,6 @@ import { NAV_STYLE_DRAWER, NAV_STYLE_FIXED, NAV_STYLE_MINI_SIDEBAR, TAB_SIZE } f
 import { useDispatch, useSelector } from "react-redux";
 import wlogo from "images/finallogo-w.png"
 import CompanyDetails from "./CompanyDetails"
-import { CheckSMSBal } from "appRedux/Actions/auth"
 const { Header } = Layout;
 
 const PageHeader = () => {
@@ -22,10 +21,7 @@ const PageHeader = () => {
 
   const { width, navStyle } = useSelector(({ settings }) => settings);
   const { navCollapsed } = useSelector(({ common }) => common);
-  const { smsbal } = useSelector(({ auth }) => auth);
-  useEffect(() => {
-    dispatch(CheckSMSBal())
-  }, [])
+
 
   return (
     <Header className="cs-header">
@@ -46,10 +42,7 @@ const PageHeader = () => {
       <div>
         <CompanyDetails />
       </div>
-      <div style={{ marginLeft: 100 }}>
-        <h3 className="gx-text-geekblue"> SMS Bal: {smsbal}</h3>
 
-      </div>
       <ul className="gx-header-notifications gx-ml-auto">
         <Auxiliary>
           <li className="gx-notify">

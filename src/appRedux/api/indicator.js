@@ -38,6 +38,56 @@ export function* RemoveIndicatorType(token, id) {
     }
 }
 
+export function* getCustomerProfilerFromApi(token, { company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+
+    try {
+        return yield API().get(`/indicators/${del_flg}/profiler`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* getCustomerProfilerSummaryFromApi(token, { branch_id, company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+    params.append('branch_id', branch_id)
+
+    try {
+        return yield API().get(`/indicators/profiler/${del_flg}/summary`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* CreateCustomerProfiler(token, data) {
+    try {
+        return yield API().post(`/indicators/profiler/bulk`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* ChangeCustomerProfiler(token, data) {
+    try {
+        return yield API().patch(`/indicators/profiler/${data.id}`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* RemoveCustomerProfiler(token, id) {
+    try {
+        return yield API().delete(`/indicators/profiler/${id}/soft`, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
 export function* getIndicatorMappingFromApi(token, { company_id, del_flg }) {
     const params = new URLSearchParams();
     params.append('company_id', company_id)

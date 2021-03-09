@@ -12,20 +12,20 @@ import Create from "./Create"
 import Edit from "./Edit"
 
 import { showAuthLoader, hideAuthLoader, showModal, hideModal } from "appRedux/Actions/common"
-import { requestSaveCustomer, requestUpdateCustomer, requestDeleteCustomer, requestGetCustomer } from "appRedux/Actions/people"
+import { requestSaveDescription, requestUpdateDescription, requestDeleteDescription, requestGetDescription } from "appRedux/Actions/indicator"
 
 import FuzzySearch from 'fuzzy-search';
 let searcher;
-const Customers = () => {
+const IndicatorDescription = () => {
     const dispatch = useDispatch()
     const [modalType, setModalType] = useState(false)
     const [detail, setDetail] = useState({})
-    const { customerLists, customerTypeLists } = useSelector(({ people }) => people);
+    const { descriptionLists } = useSelector(({ indicators }) => indicators);
     const { modal, loader } = useSelector(({ common }) => common);
     const { authUser, user } = useSelector(({ auth }) => auth);
 
     useEffect(() => {
-        dispatch(requestGetCustomer({
+        dispatch(requestGetDescription({
             del_flg: 0, company_id: user.company_id,
             branch_id: user.branch_id,
         }))
@@ -46,7 +46,7 @@ const Customers = () => {
 
     const DeleteHandler = record => {
         dispatch(showAuthLoader())
-        dispatch(requestDeleteCustomer(record.id))
+        dispatch(requestDeleteDescription(record.id))
     }
     const AddNewHandler = () => {
         setModalType(false)
@@ -57,11 +57,10 @@ const Customers = () => {
             company_id: user.company_id,
             branch_id: user.branch_id,
             created_user: authUser,
-            glcode: 325210,
             ...record
         }
         dispatch(showAuthLoader())
-        dispatch(requestSaveCustomer(data))
+        dispatch(requestSaveDescription(data))
     }
     const UpdateHandler = (record) => {
         const data = {
@@ -69,7 +68,7 @@ const Customers = () => {
             ...record
         }
         dispatch(showAuthLoader())
-        dispatch(requestUpdateCustomer(data))
+        dispatch(requestUpdateDescription(data))
     }
 
     const ValidationAlert = errorInfo => {
@@ -77,13 +76,13 @@ const Customers = () => {
     }
 
     const [dataSource, setDataSource] = useState([])
-    searcher = new FuzzySearch(customerLists, ["customer", "telephone", "address", "email",], { caseSensitive: false });
+    searcher = new FuzzySearch(descriptionLists, ["description"], { caseSensitive: false });
     useEffect(() => {
         const LoadData = async () => {
-            setDataSource(await customerLists)
+            setDataSource(await descriptionLists)
         }
         LoadData()
-    }, [customerLists])
+    }, [descriptionLists])
     const OnSearch = (e) => setDataSource(searcher.search(e.target.value))
 
     return (
@@ -94,11 +93,11 @@ const Customers = () => {
                         <LoadingProgress loading={loader} />
                         {modalType ?
                             <Edit detail={detail} onFinish={UpdateHandler} hideModalLoader={hideModalLoader} onFinishFailed={ValidationAlert}
-                                customerTypeLists={customerTypeLists}
+
                             />
                             :
                             <Create onFinish={SaveHandler} hideModalLoader={hideModalLoader} onFinishFailed={ValidationAlert}
-                                customerTypeLists={customerTypeLists}
+
                             />
                         }
                     </div>
@@ -115,11 +114,11 @@ const Customers = () => {
                 rowKey="id"
                 dataSource={dataSource}
                 AddNewHandler={AddNewHandler}
-                pageTitle="Customers"
-                placeholder="Search for Customers"
+                pageTitle="Indicator Description"
+                placeholder="Search for Description"
                 scroll={{ width: 700 }}
                 loading={{ spinning: loader, indicator: <LoadingProgress loading={loader} /> }}
-                addNewText="Customer"
+                addNewText="Description"
                 columns={[
                     {
                         title: 'ID',
@@ -127,30 +126,10 @@ const Customers = () => {
                         key: 'id',
                         width: 70,
                         fixed: 'left',
-                    },/*  {
-                        title: 'Customer Type',
-                        dataIndex: 'customer_type_id',
-                        key: 'customer_type_id',
-                    }, */ {
-                        title: 'Customer',
-                        dataIndex: 'customer',
-                        key: 'customer',
                     }, {
-                        title: 'Telephone',
-                        dataIndex: 'telephone',
-                        key: 'telephone',
-                    }, {
-                        title: 'Address',
-                        dataIndex: 'address',
-                        key: 'address',
-                    }, {
-                        title: 'Email',
-                        dataIndex: 'email',
-                        key: 'email',
-                    }, {
-                        title: 'Glcode',
-                        dataIndex: 'glcode',
-                        key: 'glcode',
+                        title: ' Description',
+                        dataIndex: 'description',
+                        key: 'description',
                     },
                     {
                         title: 'Action',
@@ -171,7 +150,7 @@ const Customers = () => {
                                             <Menu.Item key="2">
                                                 <Popconfirm
                                                     placement="top"
-                                                    title={`Are you sure to delete ${record.customer}?`}
+                                                    title={`Are you sure to delete ${record.description}?`}
                                                     onConfirm={() => DeleteHandler(record)}
                                                     onCancel={(e) => console.log(e)}
                                                     okText="Yes"
@@ -200,4 +179,4 @@ const Customers = () => {
     );
 };
 
-export default Customers;
+export default IndicatorDescription;

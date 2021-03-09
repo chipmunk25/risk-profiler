@@ -9,8 +9,6 @@ import EcommerceStatus from "./EcommerceStatus"
 
 import LoadingProgress from "components/Loading"
 //import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
-import { requestGetAvailableStock, } from "appRedux/Actions/stocks"
-import { requestGetSales, requestGetBillDue, requestGetTopCustomer, requestGetMonthSales } from "appRedux/Actions/sales"
 
 import { showAuthLoader, } from "appRedux/Actions/common"
 import moment from "moment"
@@ -30,71 +28,27 @@ const DashboardTop = () => {
 
     const dispatch = useDispatch()
 
-    const { availableLists } = useSelector(({ stocks }) => stocks);
-    const { salesLists, billsDueLists, topCustomerLists, monthSalesLists } = useSelector(({ sales }) => sales);
     const { user, } = useSelector(({ auth }) => auth)
     const { loader } = useSelector(({ common }) => common);
     const [dataSource, setDataSource] = useState([])
-    useEffect(() => { dispatch(requestGetAvailableStock({ company_id: user.company_id, branch_id: user.branch_id })) }, [ ])
-    useEffect(() => {
-        const LoadData = async () => {
-            setDataSource(await availableLists.filter(item => item.quantity <= item.product_m.low_stock_level))
-        }
-        LoadData()
-    }, [availableLists]) 
-    useEffect(() => {
-
-        dispatch(requestGetSales({
-            sale_date: moment().format("YYYY-MM-DD"),
-            created_user: 0,
-            branch_id: user.branch_id,
-            company_id: user.company_id,
-            trans_type: "DAILY"
-        }))
-    }, [ ])
-    useEffect(() => {
-        dispatch(requestGetMonthSales({
-            sale_date: moment().format("YYYY-MM-DD"),
-            created_user: 0,
-            branch_id: user.branch_id,
-            company_id: user.company_id,
-            trans_type: "MONTHLY"
-        }))
-        dispatch(showAuthLoader())
-    }, [ ])
-    useEffect(() => {
-        dispatch(requestGetBillDue({
-            branch_id: user.branch_id,
-            company_id: user.company_id,
-        }))
-    }, [ ])
-    useEffect(() => {
-        dispatch(requestGetTopCustomer({
-            branch_id: user.branch_id,
-            company_id: user.company_id,
-        }))
-    }, [ ])
-
+    
     return (
         <div>
             <LoadingProgress loading={loader} />
             <Row justify="start">
                 <Col xl={4} lg={8} md={8} sm={12} xs={24}>
-                    <EcommerceStatus color="geekblue" icon="revenue-new" title={salesLists ?
-                        formatCurrency(salesLists.reduce((a, c) => (a + (parseFloat(c.total_amt))), 0))
-                        : 0} colorTitle="primary"
+                    <EcommerceStatus color="geekblue" icon="revenue-new" title={ 0} colorTitle="primary"
                         subTitle="Total Revenue Today" colorSubTitle="grey" />
                 </Col>
                 <Col xl={4} lg={8} md={8} sm={12} xs={24}>
                     <EcommerceStatus color="orange" icon="orders" title={
-                        salesLists ? formatCurrency(salesLists.reduce((a, c) => (a + (parseFloat(c.discount_amt))), 0)) : 0
+                        0
                     } colorTitle="geekblue"
                         subTitle="Total Discount Today" colorSubTitle="geekblue" />
                 </Col>
 
                 <Col xl={4} lg={8} md={8} sm={12} xs={24}>
-                    <EcommerceStatus color={DashColor[2].cardColor} icon="visits" title={
-                        salesLists ? formatCurrency(billsDueLists.reduce((a, c) => (a + (parseFloat(actualDebt(c.debt_amt, c.amt_paid)))), 0)) : 0
+                    <EcommerceStatus color={DashColor[2].cardColor} icon="visits" title={ 0
                     } colorTitle="white" subTitle="Total Outstanding Debt"
                         colorSubTitle="geekblue" />
                 </Col>
@@ -108,16 +62,7 @@ const DashboardTop = () => {
                         viewAll="stock/reorder"
                         cartTitle="Products Need Reorder"
                         size="small"
-                        dataSource={dataSource && dataSource.slice(0, 10).map((item, index) => {
-                            return {
-                                ...item,
-                                rowNumber: index + 1,
-                                category: item.product_m.category_m.product_category,
-                                product: item.product_m.product_description,
-                                unit: item.unit_m.name,
-                                reorder_level: item.product_m.low_stock_level,
-                            }
-                        })}
+                        dataSource={dataSource }
                         rowKey="product_id"
                         scroll={{
                             y: 170,
@@ -156,18 +101,7 @@ const DashboardTop = () => {
                         viewAll="records/topselling"
                         cartTitle="Top Selling Products"
                         size="small"
-                        dataSource={orderBy(monthSalesLists.slice(0, 10), ['grand_total'], ['desc']).map((item, index) => {
-                            return {
-                                ...item,
-                                rowNumber: index + 1,
-                                quantity: item.grand_qty,
-                                product: item['product_m.product_description'],
-                                unit: item['unit_m.name'],
-                                sell_price: `₵ ${item.selling_price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                total_amt: `₵ ${item.grand_total}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                total_amount: item.grand_total,
-                            }
-                        })}
+                        dataSource={[]}
                         rowKey="product_id"
                         scroll={{
                             y: 170,
@@ -207,16 +141,7 @@ const DashboardTop = () => {
                         viewAll="records/topcustomers"
                         cartTitle="Top Customer List"
                         size="small"
-                        dataSource={orderBy(topCustomerLists.slice(0, 10), ['total_amt'], ['desc']).map((item, index) => {
-                            return {
-                                ...item,
-                                rowNumber: index + 1,
-                                customer: item.customer_m.customer,
-                                total_sales: `₵ ${item.total_amt}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                total_qty: `₵ ${item.grand_qty}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                total_discount: `₵ ${item.discount_amt}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                            }
-                        })}
+                        dataSource={[]}
                         rowKey="customer_id"
                         scroll={{
                             y: 170,
@@ -252,14 +177,7 @@ const DashboardTop = () => {
                         viewAll="records/allbillsdue"
                         cartTitle="All Bills Due"
                         size="small"
-                        dataSource={orderBy(billsDueLists.slice(0, 10), ['oustanding_debt'], ['desc']).map((item, index) => {
-                            return {
-                                ...item,
-                                rowNumber: index + 1,
-                                customer: item.customer_m.customer,
-                                debt: `₵ ${item.oustanding_debt}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                            }
-                        })}
+                        dataSource={[]}
                         rowKey="customer_id"
                         scroll={{
                             y: 170,
@@ -290,6 +208,4 @@ const DashboardTop = () => {
     );
 };
 
-const formatCurrency = (amount) => `₵ ${amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-const actualDebt = (debt, paid) => debt - paid
 export default DashboardTop;

@@ -1,12 +1,16 @@
 import {
     SUCCESS_GET_INDICATORTYPE, SUCCESS_SAVE_INDICATORTYPE, SUCCESS_UPDATE_INDICATORTYPE, SUCCESS_DELETE_INDICATORTYPE,
     SUCCESS_GET_INDICATOR, SUCCESS_SAVE_INDICATOR, SUCCESS_UPDATE_INDICATOR, SUCCESS_DELETE_INDICATOR,
+    SUCCESS_GET_PROFILER, SUCCESS_SAVE_PROFILER, SUCCESS_UPDATE_PROFILER, SUCCESS_DELETE_PROFILER,
     SUCCESS_GET_INDICATORMAPPING, SUCCESS_SAVE_INDICATORMAPPING, SUCCESS_UPDATE_INDICATORMAPPING, SUCCESS_DELETE_INDICATORMAPPING,
     SUCCESS_GET_DESCRIPTION, SUCCESS_SAVE_DESCRIPTION, SUCCESS_UPDATE_DESCRIPTION, SUCCESS_DELETE_DESCRIPTION,
+    SUCCESS_GET_PROFILERSUMMARY,
 } from "../Actions/constants"
 const INIT_STATE = {
     indicatorTypeLists: [],
     indicatorLists: [],
+    profilerLists: [],
+    profilerSummaryLists: [],
     indicatorMappingLists: [],
     descriptionLists: [],
     totalPages: 0,
@@ -105,6 +109,32 @@ const indicators = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 indicatorLists: state.indicatorLists.filter((item) => parseInt(item.id) !== parseInt(action.payload.id)),
+            };
+
+        case SUCCESS_GET_PROFILER:
+            return {
+                ...state, ...action.payload
+            }
+        case SUCCESS_GET_PROFILERSUMMARY:
+            return {
+                ...state, ...action.payload
+            }
+
+        case SUCCESS_SAVE_PROFILER:
+            return {
+                ...state, profilerLists: [...state.profilerLists, { ...action.payload }]
+            }
+        case SUCCESS_UPDATE_PROFILER:
+            index = state.profilerLists.indexOf(state.profilerLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));
+            newlist = [...state.profilerLists];
+            if (index > -1) {
+                newlist[index] = action.payload;
+            }
+            return { ...state, profilerLists: newlist }
+        case SUCCESS_DELETE_PROFILER:
+            return {
+                ...state,
+                profilerLists: state.profilerLists.filter((item) => parseInt(item.id) !== parseInt(action.payload.id)),
             };
         default:
             return state

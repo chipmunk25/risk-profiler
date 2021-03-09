@@ -1,7 +1,8 @@
 import {
     SIGNIN_USER_SUCCESS, INIT_URL, SIGNOUT_USER_SUCCESS, SUCCESS_UPDATEUSER, SUCCESS_GET_BRANCH, SUCCESS_GET_ROLE, SUCCESS_GET_USERS,
     SUCCESS_SAVE_BRANCH, SUCCESS_UPDATE_BRANCH, SUCCESS_DELETE_BRANCH, SUCCESS_SAVE_USER, SUCCESS_DELETE_USER, SUCCESS_UPDATEUSERS,
-    SUCCESS_SMSBAL,
+    SUCCESS_SAVE_ROLE, SUCCESS_UPDATE_ROLE, SUCCESS_DELETE_ROLE, SUCCESS_GET_PERMISSION, SUCCESS_SAVE_PERMISSION,
+    SUCCESS_UPDATE_PERMISSION, SUCCESS_DELETE_PERMISSION,
 } from "../Actions/constants"
 const INIT_STATE = {
     initURL: '',
@@ -9,9 +10,11 @@ const INIT_STATE = {
     user: JSON.parse(sessionStorage.getItem('user_info')),
     userLists: [],
     branchLists: [],
+    roleLists: [],
+    permissionLists: [],
     role_id: sessionStorage.getItem('role_id'),
     userStatusLists: ['ACTIVE', 'INACTIVE', 'LOCKED', 'REMOVED'],
-    smsbal: 0
+    
 };
 let newlist, index
 const Auth = (state = INIT_STATE, action) => {
@@ -83,11 +86,7 @@ const Auth = (state = INIT_STATE, action) => {
             return {
                 ...state, ...action.payload
             }
-        case SUCCESS_SMSBAL:
-            return {
-                ...state, ...action.payload
-            }
-
+      
         case SUCCESS_UPDATE_BRANCH:
             index = state.branchLists.indexOf(state.branchLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));
             newlist = [...state.branchLists];
@@ -111,6 +110,49 @@ const Auth = (state = INIT_STATE, action) => {
             return {
                 ...state, ...action.payload
             }
+            case SUCCESS_GET_ROLE:
+                return {
+                    ...state, ...action.payload
+                }
+    
+            case SUCCESS_SAVE_ROLE:
+                return {
+                    ...state, roleLists: [...state.roleLists, { ...action.payload }]
+                }
+            case SUCCESS_UPDATE_ROLE:
+                index = state.roleLists.indexOf(state.roleLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));
+                newlist = [...state.roleLists];
+                if (index > -1) {
+                    newlist[index].role_name = action.payload.role_name;
+                }
+                return { ...state, roleLists: newlist }
+            case SUCCESS_DELETE_ROLE:
+                return {
+                    ...state,
+                    roleLists: state.roleLists.filter((item) => parseInt(item.id) !== parseInt(action.payload.id)),
+                };
+            case SUCCESS_GET_PERMISSION:
+                return {
+                    ...state, ...action.payload
+                }
+    
+            case SUCCESS_SAVE_PERMISSION:
+                return {
+                    ...state, permissionLists: [{ ...action.payload }, ...state.permissionLists,]
+                }
+            case SUCCESS_UPDATE_PERMISSION:
+                index = state.permissionLists.indexOf(state.permissionLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));
+                newlist = [...state.permissionLists];
+                if (index > -1) {
+                    newlist[index].permission = action.payload.permission;
+                    newlist[index].description = action.payload.description;
+                }
+                return { ...state, permissionLists: newlist }
+            case SUCCESS_DELETE_PERMISSION:
+                return {
+                    ...state,
+                    roleLists: state.permissionLists.filter((item) => parseInt(item.id) !== parseInt(action.payload.id)),
+                };
         default:
             return state;
     }

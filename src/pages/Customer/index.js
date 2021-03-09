@@ -14,21 +14,26 @@ import Edit from "./Edit"
 import { showAuthLoader, hideAuthLoader, showModal, hideModal } from "appRedux/Actions/common"
 import { requestSaveCustomer, requestUpdateCustomer, requestDeleteCustomer, requestGetCustomer } from "appRedux/Actions/people"
 
+import { requestGetBranch, } from "appRedux/Actions/auth"
 import FuzzySearch from 'fuzzy-search';
+import FindName from "utils/FindName"
 let searcher;
 const Customers = () => {
     const dispatch = useDispatch()
     const [modalType, setModalType] = useState(false)
     const [detail, setDetail] = useState({})
-    const { customerLists, customerTypeLists } = useSelector(({ people }) => people);
+    const { customerLists, } = useSelector(({ people }) => people);
     const { modal, loader } = useSelector(({ common }) => common);
-    const { authUser, user } = useSelector(({ auth }) => auth);
+    const { authUser, user, branchLists } = useSelector(({ auth }) => auth);
 
     useEffect(() => {
         dispatch(requestGetCustomer({
             del_flg: 0, company_id: user.company_id,
             branch_id: user.branch_id,
         }))
+    }, [])
+    useEffect(() => {
+        dispatch(requestGetBranch({ del_flg: 0, company_id: user.company_id, }))
     }, [])
 
     const LoadNShowModal = () => {
@@ -57,7 +62,6 @@ const Customers = () => {
             company_id: user.company_id,
             branch_id: user.branch_id,
             created_user: authUser,
-            glcode: 325210,
             ...record
         }
         dispatch(showAuthLoader())
@@ -77,7 +81,8 @@ const Customers = () => {
     }
 
     const [dataSource, setDataSource] = useState([])
-    searcher = new FuzzySearch(customerLists, ["customer", "telephone", "address", "email",], { caseSensitive: false });
+    searcher = new FuzzySearch(customerLists, ["customer_no", "customer", "account_no",
+        "branch_m.branch_name", "telephone", "address", "email",], { caseSensitive: false });
     useEffect(() => {
         const LoadData = async () => {
             setDataSource(await customerLists)
@@ -94,11 +99,11 @@ const Customers = () => {
                         <LoadingProgress loading={loader} />
                         {modalType ?
                             <Edit detail={detail} onFinish={UpdateHandler} hideModalLoader={hideModalLoader} onFinishFailed={ValidationAlert}
-                                customerTypeLists={customerTypeLists}
+                                branchLists={branchLists}
                             />
                             :
                             <Create onFinish={SaveHandler} hideModalLoader={hideModalLoader} onFinishFailed={ValidationAlert}
-                                customerTypeLists={customerTypeLists}
+                                branchLists={branchLists}
                             />
                         }
                     </div>
@@ -112,8 +117,14 @@ const Customers = () => {
 
             <PageContent
                 OnSearch={OnSearch}
-                rowKey="id"
-                dataSource={dataSource}
+                rowKey="customer_no"
+                dataSource={dataSource.map(item => {
+                    return {
+                        ...item,
+                        branch: item.branch_m ? item.branch_m.branch_name :
+                            FindName(branchLists, item.branch_id).branch_name,
+                    }
+                })}
                 AddNewHandler={AddNewHandler}
                 pageTitle="Customers"
                 placeholder="Search for Customers"
@@ -122,19 +133,23 @@ const Customers = () => {
                 addNewText="Customer"
                 columns={[
                     {
-                        title: 'ID',
-                        dataIndex: 'id',
+                        title: 'Customer No',
+                        dataIndex: 'customer_no',
                         key: 'id',
-                        width: 70,
+                        width: 150,
                         fixed: 'left',
-                    },/*  {
-                        title: 'Customer Type',
-                        dataIndex: 'customer_type_id',
-                        key: 'customer_type_id',
-                    }, */ {
+                    }, {
+                        title: 'Branch',
+                        dataIndex: 'branch',
+                        key: 'branch',
+                    }, {
                         title: 'Customer',
                         dataIndex: 'customer',
                         key: 'customer',
+                    }, {
+                        title: 'Account No',
+                        dataIndex: 'account_no',
+                        key: 'account_no',
                     }, {
                         title: 'Telephone',
                         dataIndex: 'telephone',
@@ -147,10 +162,6 @@ const Customers = () => {
                         title: 'Email',
                         dataIndex: 'email',
                         key: 'email',
-                    }, {
-                        title: 'Glcode',
-                        dataIndex: 'glcode',
-                        key: 'glcode',
                     },
                     {
                         title: 'Action',

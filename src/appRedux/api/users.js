@@ -60,7 +60,7 @@ export function* getSMSBalFromApi(token) {
     }
 }
 
-
+/* 
 export function* getRoleFromApi(token, { branch_id, company_id, del_flg }) {
     const params = new URLSearchParams();
     params.append('company_id', company_id)
@@ -71,7 +71,7 @@ export function* getRoleFromApi(token, { branch_id, company_id, del_flg }) {
         return yield error.response
     }
 }
-
+ */
 export function* getBranchesFromApi(token, { del_flg, company_id }) {
     try {
         return yield API().get(`/companies/branch/${company_id}/${del_flg}`, { headers: { Authorization: "Bearer " + token } })
@@ -118,6 +118,84 @@ export function* RemoveUser(token, id) {
 export function* CreateUser(token, data) {
     try {
         return yield API().post(`/users`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* getRoleFromApi(token, { branch_id, company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+    params.append('branch_id', branch_id)
+    try {
+        return yield API().get(`/users/${del_flg}/roles`, { params, headers: { "Access-Control-Allow-Origin": "*", Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* CreateRole(token, data) {
+
+    try {
+        return yield API().post(`/users/role`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* ChangeRole(token, data) {
+    // console.log(data)
+    try {
+        return yield API().patch(`/users/role/${data.id}`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* RemoveRole(token, id) {
+    try {
+        return yield API().delete(`/users/role/${id}/soft`, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* getPermissionFromApi(token, { branch_id, company_id, del_flg }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+    params.append('branch_id', branch_id)
+    try {
+        return yield API().get(`/users/${del_flg}/permissions`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+
+export function* CreatePermission(token, data) {
+
+    try {
+        return yield API().post(`/users/permission`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* ChangePermission(token, data) {
+    // console.log(data)
+    try {
+        return yield API().patch(`/users/permission/${data.id}`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
+export function* RemovePermission(token, id) {
+    try {
+        return yield API().delete(`/users/permission/${id}/soft`, { headers: { Authorization: "Bearer " + token } })
     } catch (error) {
         return yield error.response
     }

@@ -1,24 +1,21 @@
 import React, { useEffect } from 'react';
-import { Form, Button, Input, Select } from "antd"
-import { SaveOutlined, PhoneFilled } from "@ant-design/icons"
+import { Form, Button, Input, Select, InputNumber } from "antd"
+import { SaveOutlined, } from "@ant-design/icons"
 const tailLayout = {
     wrapperCol: {
         offset: 12,
         span: 12,
     },
 };
-const { TextArea } = Input;
-const { Option } = Select;
-
-const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, customerTypeLists }) => {
+const { TextArea } = Input
+const { Option } = Select
+const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, indicatorTypeLists }) => {
     const [form] = Form.useForm();
     useEffect(() => {
         form.setFieldsValue({
-            customer_type_id: detail.customer_type_id,
-            customer: detail.customer,
-            telephone: detail.telephone,
-            email: detail.email,
-            address: detail.address,
+            indicator_type_id: detail.indicator_type_id,
+            indicator: detail.indicator,
+            sort_order: detail.sort_order,
         });
         setTimeout(() => {
             hideModalLoader()
@@ -29,38 +26,31 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, customerTypeL
         <div>
             <Form name="Edit" form={form} onFinish={onFinish} onFinishFailed={onFinishFailed} size="large"
                 labelCol={{ span: 6, }} wrapperCol={{ span: 16, }}>
-                <Form.Item label="Customer Type" name="customer_type_id"
-                    rules={[{ required: true, message: 'Please Select Customer Type', },]}
+                <Form.Item label="Type" name="indicator_type_id"
+                    rules={[{ required: true, message: 'Please Select Type', },]}
                 >
-                    <Select showSearch placeholder="Select Customer Type" optionFilterProp="children"
+                    <Select showSearch placeholder="Select Type" optionFilterProp="children"
                         filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         style={{ width: '100%' }} >
-                        {customerTypeLists && customerTypeLists.map((item, index) => (
+                        {indicatorTypeLists && indicatorTypeLists.map((item, index) => (
                             <React.Fragment key={index}>
-                                {detail.customer_type_id === item.id ?
-                                    <Option selected value={detail.id} >{item.customer_type}</Option>
-                                    : <Option key={item.id} value={item.id}>{item.customer_type}</Option>}
+                                {detail.indicator_type_id === item.id ?
+                                    <Option selected value={detail.indicator_type_id} >{item.indicator_type}</Option>
+                                    : <Option key={item.id} value={item.id}>{item.indicator_type}</Option>}
                             </React.Fragment>))}
-
                     </Select>
                 </Form.Item>
-                <Form.Item label="Customer" name="customer"
-                    rules={[{ required: true, message: 'Please Enter Customer', },]}
+                <Form.Item label="Sort Order" name="sort_order" >
+                    <InputNumber style={{ width: '100%' }} placeholder="Sort Order" />
+                </Form.Item>
+
+                <Form.Item label="Indicator " name="indicator"
+                    rules={[{ required: true, message: 'Please Enter Indicator', },]}
                 >
-                    <Input placeholder="Customer" allowClear />
+                    <TextArea allowClear placeholder="Indicator" autoSize={{ minRows: 5, maxRows: 10 }} />
                 </Form.Item>
-                <Form.Item label="Telephone" name="telephone"
-                    rules={[{ required: true, message: 'Please Enter Telephone', },]}
-                >
-                    <Input placeholder="Telephone" addonBefore="+233" suffix={<PhoneFilled />} />
-                </Form.Item>
-                <Form.Item label="Email" name="email" >
-                    <Input placeholder="Email" />
-                </Form.Item>
-                <Form.Item label="Address" name="address"   >
-                    <TextArea allowClear placeholder="Address" autoSize={{ minRows: 2, maxRows: 6 }} />
-                </Form.Item>
-                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+
+                <Form.Item {...tailLayout} style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                     <Button type="primary" htmlType="submit">
                         <SaveOutlined />  Update
                  </Button>

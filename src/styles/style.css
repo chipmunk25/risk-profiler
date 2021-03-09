@@ -24356,6 +24356,9 @@ a.gx-bg-pink:focus {
 .gx-bg-green {
   background-color: #52c41a !important;
 }
+.gx-bg-green-dark {
+  background-color: #009688 !important;
+}
 a.gx-bg-green:hover,
 a.gx-bg-green:focus {
   background-color: #3f9714 !important;

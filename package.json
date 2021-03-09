@@ -2,7 +2,7 @@
   "name": "risk-profiler",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://risk.chipsoftgh.com/",
+  "homepage": "https://riskprofiler.chipsoftgh.com",
   "main": "./electron/main.js",
   "dependencies": {
     "@emotion/core": "10.1.1",
