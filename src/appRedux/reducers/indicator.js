@@ -47,10 +47,10 @@ const indicators = (state = INIT_STATE, action) => {
             return {
                 ...state, ...action.payload
             }
-        case SUCCESS_SAVE_CUSTOMERREVIEW:
-            return {
-                ...state, customerReviewLists: [...state.customerReviewLists, { ...action.payload }]
-            }
+        /*   case SUCCESS_SAVE_CUSTOMERREVIEW:
+              return {
+                  ...state, customerReviewLists: [...state.customerReviewLists, { ...action.payload }]
+              } */
         case SUCCESS_UPDATE_CUSTOMERREVIEW:
             index = state.customerReviewLists.indexOf(state.customerReviewLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));
             newlist = [...state.customerReviewLists];

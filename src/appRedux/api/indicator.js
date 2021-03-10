@@ -76,12 +76,12 @@ export function* RemoveReview(token, id) {
     }
 }
 
-export function* getCustomerReviewFromApi(token, { company_id, del_flg }) {
+export function* getCustomerReviewFromApi(token, { company_id, customer_no, del_flg }) {
     const params = new URLSearchParams();
     params.append('company_id', company_id)
 
     try {
-        return yield API().get(`/indicators/${del_flg}/custreview`, { params, headers: { Authorization: "Bearer " + token } })
+        return yield API().get(`/indicators/${customer_no}/${del_flg}/custreview`, { params, headers: { Authorization: "Bearer " + token } })
     } catch (error) {
         return yield error.response
     }
@@ -90,7 +90,7 @@ export function* getCustomerReviewFromApi(token, { company_id, del_flg }) {
 
 export function* CreateCustomerReview(token, data) {
     try {
-        return yield API().post(`/indicators/custreview`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+        return yield API().post(`/indicators/custreview/bulk`, { ...data }, { headers: { Authorization: "Bearer " + token } })
     } catch (error) {
         return yield error.response
     }

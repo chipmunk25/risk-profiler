@@ -10,6 +10,7 @@ import CustomerProfiler from "./Profiler"
 import Setups from "./Setups"
 import Statuses from './Statuses';
 import Reports from './Reports';
+import CustomerReview from './CustomerReview';
 
 const App = ({ match }) => (
   <div className="gx-main-content-wrapper">
@@ -22,6 +23,7 @@ const App = ({ match }) => (
       <Route path={`${match.url}profiler`} component={CustomerProfiler} /> 
       <Route path={`${match.url}reports`} component={Reports} />
       <Route path={`${match.url}setups`} component={Setups} />
+      <Route path={`${match.url}customerreview`} component={CustomerReview} />
     </Switch>
   </div>
 );
