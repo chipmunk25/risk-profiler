@@ -92,9 +92,8 @@ const IndicatorMapping = () => {
              ...record
          } */
         const data = PrepareSave(record)
-        console.log(data)
         dispatch(showAuthLoader())
-         dispatch(requestSaveIndicatorMapping({mapping:data}))
+        dispatch(requestSaveIndicatorMapping({ mapping: data }))
     }
     const UpdateHandler = (record) => {
         const data = {

@@ -263,7 +263,7 @@ function* GetIndicatorMappingHandler({ payload }) {
 
 function* SaveIndicatorMappingHandler({ payload }) {
     const indicators = yield call(CreateIndicatorMapping, sessionStorage.getItem('token'), payload)
-    console.log(indicators)
+    //  console.log(indicators)
     yield put(hideAuthLoader())
     yield put(hideModal())
     if (indicators.status === 201) {
