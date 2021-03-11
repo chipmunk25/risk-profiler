@@ -87,3 +87,21 @@ body {
     margin-bottom: 10px !important;
   }
 }
+.mapping-form {
+  .ant-form-item-control-input-content {
+    max-width: unset;
+  }
+  .ant-select {
+    min-width: 430px;
+    max-width: 80%;
+  }
+  .description-list {
+    .ant-select {
+      min-width: 430px;
+      max-width: 100%;
+    }
+  }
+  .ant-col-16 {
+    max-width: unset;
+  }
+}

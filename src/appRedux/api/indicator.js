@@ -178,7 +178,7 @@ export function* getIndicatorMappingFromApi(token, { company_id, del_flg }) {
 
 export function* CreateIndicatorMapping(token, data) {
     try {
-        return yield API().post(`/indicators/mapping`, { ...data }, { headers: { Authorization: "Bearer " + token } })
+        return yield API().post(`/indicators/mapping/bulk`, { ...data }, { headers: { Authorization: "Bearer " + token } })
     } catch (error) {
         return yield error.response
     }

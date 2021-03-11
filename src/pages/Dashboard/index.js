@@ -28,7 +28,6 @@ const FindRolePermissions = (arrayList, role_id) => {
 }
 const FilterMenuByType = (arrayList) => {
     const result = arrayList && arrayList.filter(item => item.permission_m.perm_type === "ROUTE")
-    console.log(arrayList, result)
     return result
 }
 const Dashboard = () => {

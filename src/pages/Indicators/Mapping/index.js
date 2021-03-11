@@ -72,15 +72,29 @@ const IndicatorMapping = () => {
         setModalType(false)
         LoadNShowModal()
     }
+    const PrepareSave = record => {
+        const data = record && record.descriptions.map(item => {
+            return {
+                ...item,
+                company_id: user.company_id,
+                branch_id: user.branch_id,
+                created_user: authUser,
+                indicator_id: record.indicator_id,
+            }
+        })
+        return data
+    }
     const SaveHandler = (record) => {
-        const data = {
-            company_id: user.company_id,
-            branch_id: user.branch_id,
-            created_user: authUser,
-            ...record
-        }
+        /*  const data = {
+             company_id: user.company_id,
+             branch_id: user.branch_id,
+             created_user: authUser,
+             ...record
+         } */
+        const data = PrepareSave(record)
+        console.log(data)
         dispatch(showAuthLoader())
-        dispatch(requestSaveIndicatorMapping(data))
+         dispatch(requestSaveIndicatorMapping({mapping:data}))
     }
     const UpdateHandler = (record) => {
         const data = {
@@ -104,7 +118,7 @@ const IndicatorMapping = () => {
         LoadData()
     }, [indicatorMappingLists])
     const OnSearch = (e) => setDataSource(searcher.search(e.target.value))
-    
+
     return (
         <div className="gx-main-content">
             <FormModal

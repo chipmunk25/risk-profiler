@@ -109,7 +109,7 @@ const indicators = (state = INIT_STATE, action) => {
             }
         case SUCCESS_SAVE_INDICATORMAPPING:
             return {
-                ...state, indicatorMappingLists: [...state.indicatorMappingLists, { ...action.payload }]
+                ...state, indicatorMappingLists: [...state.indicatorMappingLists, ...action.payload]
             }
         case SUCCESS_UPDATE_INDICATORMAPPING:
             index = state.indicatorMappingLists.indexOf(state.indicatorMappingLists.find(item => parseInt(action.payload.id) === parseInt(item.id)));

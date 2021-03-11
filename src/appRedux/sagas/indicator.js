@@ -5,8 +5,8 @@ import {
     getIndicatorMappingFromApi, CreateIndicatorMapping, ChangeIndicatorMapping, RemoveIndicatorMapping,
     getDescriptionFromApi, CreateDescription, ChangeDescription, RemoveDescription,
     getCustomerProfilerFromApi, CreateCustomerProfiler, ChangeCustomerProfiler, RemoveCustomerProfiler,
-    getCustomerProfilerSummaryFromApi,RemoveReview,ChangeReview,CreateReview,getReviewFromApi,
-    RemoveCustomerReview,ChangeCustomerReview,CreateCustomerReview,getCustomerReviewFromApi,
+    getCustomerProfilerSummaryFromApi, RemoveReview, ChangeReview, CreateReview, getReviewFromApi,
+    RemoveCustomerReview, ChangeCustomerReview, CreateCustomerReview, getCustomerReviewFromApi,
 } from "../api/indicator"
 
 import {
@@ -15,8 +15,8 @@ import {
     successGetIndicatorMapping, successSaveIndicatorMapping, successUpdateIndicatorMapping, successDeleteIndicatorMapping,
     successGetDescription, successSaveDescription, successUpdateDescription, successDeleteDescription,
     successDeleteProfiler, successUpdateProfiler, successSaveProfiler, successGetProfiler, successGetProfilerSummary,
-    successDeleteReview,successUpdateReview,successSaveReview,successGetReview,
-    successDeleteCustomerReview,successUpdateCustomerReview,successSaveCustomerReview,successGetCustomerReview,
+    successDeleteReview, successUpdateReview, successSaveReview, successGetReview,
+    successDeleteCustomerReview, successUpdateCustomerReview, successSaveCustomerReview, successGetCustomerReview,
 } from "../Actions/indicator"
 import {
     REQUEST_GET_INDICATORTYPE, REQUEST_SAVE_INDICATORTYPE, REQUEST_UPDATE_INDICATORTYPE, REQUEST_DELETE_INDICATORTYPE,
@@ -24,8 +24,8 @@ import {
     REQUEST_GET_INDICATORMAPPING, REQUEST_SAVE_INDICATORMAPPING, REQUEST_UPDATE_INDICATORMAPPING, REQUEST_DELETE_INDICATORMAPPING,
     REQUEST_GET_DESCRIPTION, REQUEST_SAVE_DESCRIPTION, REQUEST_UPDATE_DESCRIPTION, REQUEST_DELETE_DESCRIPTION,
     REQUEST_DELETE_PROFILER, REQUEST_UPDATE_PROFILER, REQUEST_SAVE_PROFILER, REQUEST_GET_PROFILER,
-    REQUEST_GET_PROFILERSUMMARY,REQUEST_DELETE_REVIEW,REQUEST_UPDATE_REVIEW,REQUEST_SAVE_REVIEW,REQUEST_GET_REVIEW,
-    REQUEST_DELETE_CUSTOMERREVIEW,REQUEST_UPDATE_CUSTOMERREVIEW,REQUEST_SAVE_CUSTOMERREVIEW,REQUEST_GET_CUSTOMERREVIEW
+    REQUEST_GET_PROFILERSUMMARY, REQUEST_DELETE_REVIEW, REQUEST_UPDATE_REVIEW, REQUEST_SAVE_REVIEW, REQUEST_GET_REVIEW,
+    REQUEST_DELETE_CUSTOMERREVIEW, REQUEST_UPDATE_CUSTOMERREVIEW, REQUEST_SAVE_CUSTOMERREVIEW, REQUEST_GET_CUSTOMERREVIEW
 } from "../Actions/constants"
 
 
@@ -263,6 +263,7 @@ function* GetIndicatorMappingHandler({ payload }) {
 
 function* SaveIndicatorMappingHandler({ payload }) {
     const indicators = yield call(CreateIndicatorMapping, sessionStorage.getItem('token'), payload)
+    console.log(indicators)
     yield put(hideAuthLoader())
     yield put(hideModal())
     if (indicators.status === 201) {

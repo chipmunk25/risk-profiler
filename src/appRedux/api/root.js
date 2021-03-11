@@ -6,7 +6,7 @@ export const TEST_URL = "http://localhost:8081/v1"
 
 const root = () => {
     return axios.create({
-        baseURL: ONLINE_TEST_URL,
+        baseURL: TEST_URL,
         withCredentials: true,
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -15,4 +15,5 @@ const root = () => {
         },
     });
 } 
+
 export default root
