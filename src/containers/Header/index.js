@@ -11,7 +11,7 @@ import { MenuFoldOutlined } from "@ant-design/icons"
 import { toggleCollapsedSideNav } from "appRedux/Actions/Setting";
 import { NAV_STYLE_DRAWER, NAV_STYLE_FIXED, NAV_STYLE_MINI_SIDEBAR, TAB_SIZE } from "appRedux/Actions/ThemeSetting";
 import { useDispatch, useSelector } from "react-redux";
-import wlogo from "images/finallogo-w.png"
+import wlogo from "images/logo.png"
 import CompanyDetails from "./CompanyDetails"
 const { Header } = Layout;
 
@@ -44,7 +44,7 @@ const PageHeader = () => {
       </div>
 
       <ul className="gx-header-notifications gx-ml-auto">
-        <Auxiliary>
+        {/* <Auxiliary>
           <li className="gx-notify">
             <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={<AppNotification />}
               trigger="click">
@@ -64,7 +64,7 @@ const PageHeader = () => {
               </span>
             </Popover>
           </li>
-        </Auxiliary>
+        </Auxiliary> */}
         {/*  {width >= TAB_SIZE ? null : } */}
 
         {width >= TAB_SIZE ?

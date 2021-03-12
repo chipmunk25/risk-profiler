@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import chipLogo from "images/finallogo.png"
+import chipLogo from "images/logo-b.png"
 import { onNavStyleChange, toggleCollapsedSideNav } from "appRedux/Actions/Setting";
 import {
     MenuUnfoldOutlined,

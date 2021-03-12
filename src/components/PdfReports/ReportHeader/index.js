@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import "./style.scss"
-import logo from "images/finallogo-w.png"
+import logo from "images/logo.png"
 
 import { useDispatch, useSelector } from 'react-redux';
 import { requestGetBranch, } from "appRedux/Actions/auth"

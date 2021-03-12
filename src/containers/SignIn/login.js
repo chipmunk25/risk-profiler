@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import LoginForm from "./loginform"
 import loginImg from "../../images/login.svg";
-import logom from "../../images/finallogo-l.png"
+import logom from "../../images/logo-b.png"
 import "./login.scss"
 
 import {  useSelector } from "react-redux";

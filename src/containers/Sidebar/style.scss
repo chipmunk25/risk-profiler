@@ -1,22 +1,32 @@
 .ant-layout-sider {
-  background: #062d40 !important;
+  background: #d0e5e8 !important;
   & .logo {
     height: 32px;
-    background: rgba(255, 255, 255, 0.3);
+    background: #d0e5e8; /* rgba(255, 255, 255, 0.3); */
     margin: 16px;
   }
   & .sidebar-menu-container {
-    background: #062d40;
+    background: #d0e5e8;
   }
   & .menu-trigger {
-    color: white;
+    color: #8aadb2;
   }
   & .gx-layout-sider-dark {
-    color: #97b8c7 !important;
+    color: #8aadb2 !important;
   }
+  & .gx-layout-sider-lite {
+    color: #8aadb2 !important;
+  }
+
   & .ant-menu-item .anticon,
   .ant-menu-submenu-title .anticon {
-    font-size:larger;
+    font-size: larger;
+  }
+  .ant-menu {
+    background: #d0e5e8 !important;
+  }
+  .gx-sidebar-notifications {
+    border-bottom: solid 1px #8aadb2;
   }
 }
 
