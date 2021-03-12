@@ -143,6 +143,7 @@ const CustomerProfiler = () => {
                                     <p>Customer Number (CIF): <strong> {selectedCustomer ? selectedCustomer.customer_no : ""}</strong></p>
                                     <p>Account Number: <strong> {selectedCustomer ? selectedCustomer.account_no : ""}</strong></p>
                                     <p>Branch Name: <strong> {selectedCustomer ? selectedCustomer.branch_m.branch_name : ""}</strong></p>
+                                    <p>Source of Funds: <strong> {selectedCustomer ? selectedCustomer.sourceof_funds : ""}</strong></p>
                                 </div>
                             </Widget>
                         </Col>
