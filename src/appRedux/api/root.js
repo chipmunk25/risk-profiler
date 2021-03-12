@@ -6,7 +6,7 @@ export const TEST_URL = "http://localhost:8081/v1"
 
 const root = () => {
     return axios.create({
-        baseURL: TEST_URL,
+        baseURL: ONLINE_TEST_URL,
         withCredentials: true,
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -14,6 +14,6 @@ const root = () => {
             'Content-Type': 'application/json'
         },
     });
-} 
+}
 
 export default root

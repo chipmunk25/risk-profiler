@@ -62,6 +62,7 @@ const Customers = () => {
             company_id: user.company_id,
             branch_id: user.branch_id,
             created_user: authUser,
+            review_by: authUser,
             ...record
         }
         dispatch(showAuthLoader())
