@@ -51,6 +51,9 @@ const Create = ({ onFinish, onFinishFailed, hideModalLoader,branchLists }) => {
                 >
                     <Input placeholder="Account No" allowClear />
                 </Form.Item>
+                <Form.Item label="Source of Funds" name="sourceof_funds" >
+                    <Input placeholder="Source of Funds" />
+                </Form.Item>
                 <Form.Item label="Telephone" name="telephone"
                     rules={[{ required: true, message: 'Please Enter Telephone', },]}
                 >

@@ -152,6 +152,10 @@ const Customers = () => {
                         dataIndex: 'account_no',
                         key: 'account_no',
                     }, {
+                        title: 'Source of Funds',
+                        dataIndex: 'sourceof_funds',
+                        key: 'sourceof_funds',
+                    }, {
                         title: 'Telephone',
                         dataIndex: 'telephone',
                         key: 'telephone',

@@ -21,6 +21,7 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, branchLists }
             telephone: detail.telephone,
             email: detail.email,
             address: detail.address,
+            sourceof_funds: detail.sourceof_funds,
         });
         setTimeout(() => {
             hideModalLoader()
@@ -61,6 +62,10 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, branchLists }
                 >
                     <Input placeholder="Account No" allowClear />
                 </Form.Item>
+                <Form.Item label="Source of Funds" name="sourceof_funds" >
+                    <Input placeholder="Source of Funds" />
+                </Form.Item>
+                </Form.Item>
                 <Form.Item label="Telephone" name="telephone"
                     rules={[{ required: true, message: 'Please Enter Telephone', },]}
                 >
@@ -68,7 +73,6 @@ const Edit = ({ detail, onFinish, onFinishFailed, hideModalLoader, branchLists }
                 </Form.Item>
                 <Form.Item label="Email" name="email" >
                     <Input placeholder="Email" />
-                </Form.Item>
                 <Form.Item label="Address" name="address"   >
                     <TextArea allowClear placeholder="Address" autoSize={{ minRows: 2, maxRows: 6 }} />
                 </Form.Item>
