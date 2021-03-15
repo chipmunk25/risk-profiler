@@ -117,7 +117,7 @@ const IndicatorMapping = () => {
         LoadData()
     }, [indicatorMappingLists])
     const OnSearch = (e) => setDataSource(searcher.search(e.target.value))
-
+ //   console.log(dataSource)
     return (
         <div className="gx-main-content">
             <FormModal
