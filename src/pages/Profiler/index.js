@@ -43,7 +43,7 @@ const CustomerProfiler = () => {
             branch_id: user.branch_id,
         }))
     }, [])
-
+    //   console.log(selectedIndicator)
     useEffect(() => {
         dispatch(requestGetIndicatorMapping({
             del_flg: 0, company_id: user.company_id,
@@ -204,17 +204,33 @@ const CustomerProfiler = () => {
                                         ))
                                     }
                                 </div>
-                                <ProfileValueViewer
-                                    colorTitle={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
-                                        RatingCheck(statusLists, CalcProfValue(state.profiler)).textColor : "geekblue"}
-                                    color={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
-                                        RatingCheck(statusLists, CalcProfValue(state.profiler)).bgColor : "white"}
-                                    title={CalcProfValue(state.profiler)}
-                                />
-                                <div>
-                                    <Alert message={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
-                                        RatingCheck(statusLists, CalcProfValue(state.profiler)).description : "Next Action After Assessment"} type="info" showIcon />
-                                </div>
+                                {
+                                    user.rating_type === "AVERAGE" ?
+                                        <div>
+                                            <ProfileValueViewer
+                                                colorTitle={RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)) ?
+                                                    RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)).textColor : "geekblue"}
+                                                color={RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)) ?
+                                                    RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)).bgColor : "white"}
+                                                title={AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)}
+                                            />
+                                            <Alert message={RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)) ?
+                                                RatingCheck(statusLists, AverageRating(CalcProfValue(state.profiler), selectedIndicator ? selectedIndicator.length : 0)).description : "Next Action After Assessment"} type="info" showIcon />
+                                        </div>
+                                        :
+                                        <div>
+                                            <ProfileValueViewer
+                                                colorTitle={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
+                                                    RatingCheck(statusLists, CalcProfValue(state.profiler)).textColor : "geekblue"}
+                                                color={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
+                                                    RatingCheck(statusLists, CalcProfValue(state.profiler)).bgColor : "white"}
+                                                title={CalcProfValue(state.profiler)}
+                                            />
+                                            <Alert message={RatingCheck(statusLists, CalcProfValue(state.profiler)) ?
+                                                RatingCheck(statusLists, CalcProfValue(state.profiler)).description : "Next Action After Assessment"} type="info" showIcon />
+                                        </div>
+
+                                }
                             </Col>
                         </Row>
                     </Col>
@@ -278,5 +294,6 @@ const CalcProfValue = (profiler) => {
 
 const RatingCheck = (arrayList, value) => arrayList.find(item => parseInt(value) > parseInt(item.rating_lower) && parseInt(value) <= parseInt(item.rating_upper))
 
+const AverageRating = (total, count) => count ? (total / count).toFixed(2) : 0
 
 export default CustomerProfiler;
