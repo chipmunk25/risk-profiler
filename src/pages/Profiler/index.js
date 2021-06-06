@@ -123,7 +123,7 @@ const CustomerProfiler = () => {
             ...record
         }
         const finaldata = { profiler: data, customer: custdata, customer_no: record.customer_no }
-        console.log(finaldata)
+        // console.log(finaldata)
         dispatch(showAuthLoader())
         dispatch(requestSaveProfiler(finaldata))
         setSelectedCustomer(undefined)
