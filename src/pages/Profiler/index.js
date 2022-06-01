@@ -9,7 +9,7 @@ import { requestGetCustomer } from "appRedux/Actions/people"
 import {
     requestGetIndicatorMapping, requestGetIndicatorType, requestSaveProfiler
 } from "appRedux/Actions/indicator"
-import { showAuthLoader, hideAuthLoader, } from "appRedux/Actions/common"
+
 
 import { requestGetBranch, } from "appRedux/Actions/auth"
 import { requestGetStatus } from "appRedux/Actions/status"
@@ -17,7 +17,12 @@ import LoadingProgress from "components/Loading"
 import { onAddItem, onItemExist, onUpdateItem, onRemoveAll } from "utils/CartFunctions"
 import ProfileForm from "./ProfileForm"
 import ProfileValueViewer from "./ValueViewer"
+import { showAuthLoader, hideAuthLoader, showModal, hideModal } from "appRedux/Actions/common"
+
 import _ from "lodash"
+import FormModal from 'components/Modals';
+import PrintPreview from './preview';
+import { requestGetCustomerProfiler } from '../../appRedux/Actions/indicator';
 const { Option } = Select
 const FindCustomer = (arrayList, value) => arrayList.find(item => item.customer_no === value)
 const FindIndicator = (arrayList, value) => arrayList.find(item => parseInt(item.id) === parseInt(value))
@@ -30,14 +35,26 @@ const CustomerProfiler = () => {
     const [state, setState] = useState({
         profiler: []
     })
-
-    const { loader } = useSelector(({ common }) => common);
+    const { modal, loader } = useSelector(({ common }) => common);
+    const LoadNShowModal = () => {
+        dispatch(showAuthLoader())
+        dispatch(showModal())
+    }
+    const CloseModal = () => {
+        dispatch(hideModal())
+        setSelectedCustomer(undefined)
+        setSelectedIndicatorType("")
+        setSelectedSetIndicator(undefined)
+        const removed = onRemoveAll(state)
+        setState(removed)
+        form.resetFields()
+    }
+    const hideModalLoader = () => dispatch(hideAuthLoader())
     const { user, authUser, branchLists } = useSelector(({ auth }) => auth);
     const { customerLists, } = useSelector(({ people }) => people);
     const { statusLists, } = useSelector(({ statuses }) => statuses);
     const { indicatorTypeLists } = useSelector(({ indicators }) => indicators);
 
-    console.log(user)
     useEffect(() => {
         dispatch(requestGetCustomer({
             del_flg: 0, company_id: user.company_id,
@@ -106,6 +123,7 @@ const CustomerProfiler = () => {
             }
         })
     }
+    const [customerInfo, setCustomerInfo] = useState({})
     const SaveCustomerProfilerHandler = (record) => {
         /*   if (_.isEmpty(selectedCustomer)) {
               message.error('Select Customer');
@@ -115,6 +133,7 @@ const CustomerProfiler = () => {
             message.error('Select Indications');
             return;
         }
+        setCustomerInfo(record)
         const data = PrepareSave(record.customer_no)
         //  console.log(data)
         const custdata = {
@@ -124,21 +143,37 @@ const CustomerProfiler = () => {
             ...record
         }
         const finaldata = { profiler: data, customer: custdata, customer_no: record.customer_no }
-        console.log(finaldata)
-        // dispatch(showAuthLoader())
-        // dispatch(requestSaveProfiler(finaldata))
-        // setSelectedCustomer(undefined)
-        // setSelectedIndicatorType("")
-        // setSelectedSetIndicator(undefined)
-        // const removed = onRemoveAll(state)
-        // setState(removed)
-        // form.resetFields()
+        dispatch(showAuthLoader())
+        dispatch(requestSaveProfiler(finaldata))
+        dispatch(requestGetCustomerProfiler({ del_flg: 0, company_id: user.company_id, customer_no: record.customer_no }))
+        // console.log(finaldata, record)
+        LoadNShowModal()
+
     }
+
     const onFinishFailed = errorInfo => console.log(errorInfo)
     // console.log(selectedIndicator, "indicator")
     return (
         <div>
             <LoadingProgress loading={loader} />
+            <FormModal
+                children={
+                    <div>
+                        <LoadingProgress loading={loader} />
+                        {
+                            <PrintPreview fullname={user.fullname}
+                                customerInfo={customerInfo}
+                                hideModalLoader={hideModalLoader}// onFinishFailed={ValidationAlert}
+                                CloseModal={CloseModal}
+                            />
+                        }
+                    </div>
+                }
+                title={"Print Preview"}
+                visible={modal}
+                width={700}
+                handleCancel={CloseModal}
+            />
             <Form name="Add" form={form} onFinish={SaveCustomerProfilerHandler} onFinishFailed={onFinishFailed} size="small"
                 labelCol={{ span: 7, }} wrapperCol={{ span: 16, }}>
                 <Row>

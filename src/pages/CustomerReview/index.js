@@ -35,7 +35,7 @@ const CustomerReview = () => {
     const { statusLists, } = useSelector(({ statuses }) => statuses);
     const { user, authUser } = useSelector(({ auth }) => auth);
 
-    console.log(profilerSummaryLists, reviewLists, customerReviewLists, customerLists, customerProfiler)
+    console.log(customerProfiler)
     useEffect(() => {
         dispatch(requestGetCustomer({
             del_flg: 0, company_id: user.company_id,
@@ -69,7 +69,7 @@ const CustomerReview = () => {
         const reviewl = RatingCheck(statusLists, customerRisk?.risk_value)
         const revl = FindReview(reviewLists, reviewl?.id)
         setReviewData(revl)
-        console.log(customer, customerRisk, reviewl, revl)
+        // console.log(customer, customerRisk, reviewl, revl)
         dispatch(requestGetCustomerReview({ del_flg: 0, company_id: user.company_id, customer_no: value }))
         dispatch(requestGetCustomerProfiler({ del_flg: 0, company_id: user.company_id, customer_no: value }))
     }
