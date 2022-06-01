@@ -30,6 +30,7 @@ const IndicatorMapping = () => {
     const { modal, loader } = useSelector(({ common }) => common);
     const { authUser, user } = useSelector(({ auth }) => auth);
 
+    console.log(indicatorLists)
     useEffect(() => {
         dispatch(requestGetIndicatorMapping({
             del_flg: 0, company_id: user.company_id,
@@ -117,7 +118,7 @@ const IndicatorMapping = () => {
         LoadData()
     }, [indicatorMappingLists])
     const OnSearch = (e) => setDataSource(searcher.search(e.target.value))
- //   console.log(dataSource)
+    //   console.log(dataSource)
     return (
         <div className="gx-main-content">
             <FormModal
@@ -150,8 +151,9 @@ const IndicatorMapping = () => {
                 dataSource={dataSource.map(item => {
                     return {
                         ...item,
-                        indicator: item.indicator_m ? item.indicator_m.indicator : FindName(indicatorLists, item.indicator_id).indicator,
-                        description: item.indicator_description_m ? item.indicator_description_m.description : FindName(descriptionLists, item.description_id).description,
+                        // indicator_type: FindName(indicatorLists, item.indicator_id).indicator_type_m?.indicator_type,
+                        indicator: item?.indicator_m ? item?.indicator_m?.indicator : FindName(indicatorLists, item?.indicator_id).indicator,
+                        description: item?.indicator_description_m ? item?.indicator_description_m?.description : FindName(descriptionLists, item?.description_id)?.description,
                     }
                 })}
                 AddNewHandler={AddNewHandler}
@@ -167,7 +169,13 @@ const IndicatorMapping = () => {
                         key: 'id',
                         width: 70,
                         fixed: 'left',
-                    }, {
+                    },
+                    // {
+                    //     title: 'Indicator Type',
+                    //     dataIndex: 'indicator_type',
+                    //     key: 'indicator_type',
+                    // }, 
+                    {
                         title: 'Indicator ',
                         dataIndex: 'indicator',
                         key: 'indicator',
@@ -194,7 +202,7 @@ const IndicatorMapping = () => {
                                             <Menu.Item key="1">
                                                 <span className="gx-text-blue" onClick={() => EditDataHandler(record)}>
                                                     <EditOutlined /> Edit
-                                            </span>
+                                                </span>
                                             </Menu.Item>
                                             <Menu.Item key="2">
                                                 <Popconfirm
@@ -207,7 +215,7 @@ const IndicatorMapping = () => {
                                                 >
                                                     <span className="gx-text-red" >
                                                         <DeleteOutlined /> Delete
-                                            </span>
+                                                    </span>
                                                 </Popconfirm>
 
                                             </Menu.Item>

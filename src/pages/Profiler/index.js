@@ -37,6 +37,7 @@ const CustomerProfiler = () => {
     const { statusLists, } = useSelector(({ statuses }) => statuses);
     const { indicatorTypeLists } = useSelector(({ indicators }) => indicators);
 
+    console.log(user)
     useEffect(() => {
         dispatch(requestGetCustomer({
             del_flg: 0, company_id: user.company_id,
@@ -123,18 +124,18 @@ const CustomerProfiler = () => {
             ...record
         }
         const finaldata = { profiler: data, customer: custdata, customer_no: record.customer_no }
-        // console.log(finaldata)
-        dispatch(showAuthLoader())
-        dispatch(requestSaveProfiler(finaldata))
-        setSelectedCustomer(undefined)
-        setSelectedIndicatorType("")
-        setSelectedSetIndicator(undefined)
-        const removed = onRemoveAll(state)
-        setState(removed)
-        form.resetFields()
+        console.log(finaldata)
+        // dispatch(showAuthLoader())
+        // dispatch(requestSaveProfiler(finaldata))
+        // setSelectedCustomer(undefined)
+        // setSelectedIndicatorType("")
+        // setSelectedSetIndicator(undefined)
+        // const removed = onRemoveAll(state)
+        // setState(removed)
+        // form.resetFields()
     }
     const onFinishFailed = errorInfo => console.log(errorInfo)
-
+    // console.log(selectedIndicator, "indicator")
     return (
         <div>
             <LoadingProgress loading={loader} />
@@ -257,11 +258,11 @@ const CustomerProfiler = () => {
                                 <Widget styleName="gx-card-full" title={
                                     <h3 className=" h3 gx-text-capitalize gx-fs-l gx-font-weight-bold gx-text-geekblue">
                                         {selectedIndicatorType} RISK PROFILING TEMPLATE
-                             </h3>
+                                    </h3>
                                 } extra={
                                     <Button type="primary" htmlType="submit">
                                         Save
-                        </Button>
+                                    </Button>
                                 }>
                                     <div className="gx-m-2">
                                         {selectedIndicator ?
@@ -292,7 +293,7 @@ const CalcProfValue = (profiler) => {
 }
 
 
-const RatingCheck = (arrayList, value) => arrayList.find(item => parseInt(value) > parseInt(item.rating_lower) && parseInt(value) <= parseInt(item.rating_upper))
+const RatingCheck = (arrayList, value) => arrayList.find(item => parseFloat(value) > parseFloat(item.rating_lower) && parseFloat(value) <= parseFloat(item.rating_upper))
 
 const AverageRating = (total, count) => count ? (total / count).toFixed(2) : 0
 

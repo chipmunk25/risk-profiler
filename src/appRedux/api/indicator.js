@@ -125,6 +125,17 @@ export function* getCustomerProfilerFromApi(token, { company_id, del_flg }) {
     }
 }
 
+export function* getOneCustomerProfilerFromApi(token, { company_id, del_flg, customer_no }) {
+    const params = new URLSearchParams();
+    params.append('company_id', company_id)
+
+    try {
+        return yield API().get(`/indicators/${del_flg}/customer/${customer_no}/profiler`, { params, headers: { Authorization: "Bearer " + token } })
+    } catch (error) {
+        return yield error.response
+    }
+}
+
 export function* getCustomerProfilerSummaryFromApi(token, { branch_id, company_id, del_flg }) {
     const params = new URLSearchParams();
     params.append('company_id', company_id)

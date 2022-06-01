@@ -5,13 +5,14 @@ import {
     SUCCESS_GET_INDICATORMAPPING, SUCCESS_SAVE_INDICATORMAPPING, SUCCESS_UPDATE_INDICATORMAPPING, SUCCESS_DELETE_INDICATORMAPPING,
     SUCCESS_GET_DESCRIPTION, SUCCESS_SAVE_DESCRIPTION, SUCCESS_UPDATE_DESCRIPTION, SUCCESS_DELETE_DESCRIPTION,
     SUCCESS_GET_PROFILERSUMMARY, SUCCESS_GET_REVIEW, SUCCESS_SAVE_REVIEW, SUCCESS_UPDATE_REVIEW, SUCCESS_DELETE_REVIEW,
-    SUCCESS_GET_CUSTOMERREVIEW, SUCCESS_SAVE_CUSTOMERREVIEW, SUCCESS_UPDATE_CUSTOMERREVIEW, SUCCESS_DELETE_CUSTOMERREVIEW,
+    SUCCESS_GET_CUSTOMERREVIEW, SUCCESS_SAVE_CUSTOMERREVIEW, SUCCESS_UPDATE_CUSTOMERREVIEW, SUCCESS_DELETE_CUSTOMERREVIEW, SUCCESS_GET_CUSTOMER_PROFILER,
 
 } from "../Actions/constants"
 const INIT_STATE = {
     indicatorTypeLists: [],
     indicatorLists: [],
     profilerLists: [],
+    customerProfiler: [],
     reviewLists: [],
     customerReviewLists: [],
     profilerSummaryLists: [],
@@ -148,6 +149,10 @@ const indicators = (state = INIT_STATE, action) => {
                 indicatorLists: state.indicatorLists.filter((item) => parseInt(item.id) !== parseInt(action.payload.id)),
             };
         case SUCCESS_GET_PROFILER:
+            return {
+                ...state, ...action.payload
+            }
+        case SUCCESS_GET_CUSTOMER_PROFILER:
             return {
                 ...state, ...action.payload
             }

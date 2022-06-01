@@ -2,7 +2,6 @@ import React from 'react';
 import { Row, Col, Select } from "antd"
 const { Option } = Select
 const ProfileForm = ({ label, InputContent, InputSelectHandler }) => {
-    //   console.log(label, InputContent)
     return (
         <Row justify="space-around">
             <Col span={12}><strong>{label}</strong></Col>

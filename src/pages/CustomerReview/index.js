@@ -8,7 +8,7 @@ import ProfileValueViewer from "./ValueViewer"
 import _ from "lodash"
 import { requestGetStatus } from "appRedux/Actions/status"
 import { showAuthLoader, hideAuthLoader, } from "appRedux/Actions/common"
-import { requestGetProfilerSummary, requestGetReview, requestGetCustomerReview, requestSaveCustomerReview } from "appRedux/Actions/indicator"
+import { requestGetProfilerSummary, requestGetReview, requestGetCustomerReview, requestGetCustomerProfiler, requestSaveCustomerReview } from "appRedux/Actions/indicator"
 const FindCustomer = (arrayList, value) => arrayList.find(item => item.customer_no === value)
 const FindReviews = (arrayList, valueList) => arrayList.filter(item => valueList.includes(item.id));
 const FindOldReviews = (myArray, myFilter) => myArray && myArray.filter((el) => myFilter.every((f) => parseInt(f.review_id) !== parseInt(el.id)));
@@ -31,9 +31,11 @@ const CustomerReview = () => {
     const [reviewData, setReviewData] = useState(undefined)
     const { loader } = useSelector(({ common }) => common);
     const { customerLists, } = useSelector(({ people }) => people);
-    const { profilerSummaryLists, reviewLists, customerReviewLists } = useSelector(({ indicators }) => indicators);
+    const { profilerSummaryLists, reviewLists, customerReviewLists, customerProfiler } = useSelector(({ indicators }) => indicators);
     const { statusLists, } = useSelector(({ statuses }) => statuses);
     const { user, authUser } = useSelector(({ auth }) => auth);
+
+    console.log(profilerSummaryLists, reviewLists, customerReviewLists, customerLists, customerProfiler)
     useEffect(() => {
         dispatch(requestGetCustomer({
             del_flg: 0, company_id: user.company_id,
@@ -63,11 +65,13 @@ const CustomerReview = () => {
         const customer = FindCustomer(customerLists, value)
         setSelectedCustomer(customer)
         const customerRisk = FindCustomer(profilerSummaryLists, value)
-        setSelectedCustomerRisk(customerRisk.risk_value)
-        const reviewl = RatingCheck(statusLists, customerRisk.risk_value)
-        const revl = FindReview(reviewLists, reviewl.id)
+        setSelectedCustomerRisk(customerRisk?.risk_value)
+        const reviewl = RatingCheck(statusLists, customerRisk?.risk_value)
+        const revl = FindReview(reviewLists, reviewl?.id)
         setReviewData(revl)
+        console.log(customer, customerRisk, reviewl, revl)
         dispatch(requestGetCustomerReview({ del_flg: 0, company_id: user.company_id, customer_no: value }))
+        dispatch(requestGetCustomerProfiler({ del_flg: 0, company_id: user.company_id, customer_no: value }))
     }
     const HandleReviewSelect = (value) => {
         const selReview = FindReviews(reviewLists, value)
@@ -131,13 +135,22 @@ const CustomerReview = () => {
                         </Col>
                         <Col span={24}>
                             <h1 className={`gx-fs-xl gx-font-weight-bold gx-text-geekblue`}>Risk Value</h1>
-                            <ProfileValueViewer
-                                colorTitle={RatingCheck(statusLists, selectedCustomerRisk) ?
-                                    RatingCheck(statusLists, RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))).textColor : "geekblue"}
-                                color={RatingCheck(statusLists, selectedCustomerRisk) ?
-                                    RatingCheck(statusLists, RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))).bgColor : "white"}
-                                title={RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))}
-                            />
+                            {//customerProfiler
+                                user.rating_type === "AVERAGE" ? <ProfileValueViewer
+                                    colorTitle={RatingCheck(statusLists, selectedCustomerRisk) ?
+                                        RatingCheck(statusLists, RatingAfterReview(AverageRating(selectedCustomerRisk, customerProfiler.length), CalcReviewValue(selectedReview))).textColor : "geekblue"}
+                                    color={RatingCheck(statusLists, AverageRating(selectedCustomerRisk, customerProfiler.length)) ?
+                                        RatingCheck(statusLists, RatingAfterReview(AverageRating(selectedCustomerRisk, customerProfiler.length), CalcReviewValue(selectedReview))).bgColor : "white"}
+                                    title={RatingAfterReview(AverageRating(selectedCustomerRisk, customerProfiler.length), CalcReviewValue(selectedReview))}
+
+                                /> : <ProfileValueViewer
+                                    colorTitle={RatingCheck(statusLists, selectedCustomerRisk) ?
+                                        RatingCheck(statusLists, RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))).textColor : "geekblue"}
+                                    color={RatingCheck(statusLists, selectedCustomerRisk) ?
+                                        RatingCheck(statusLists, RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))).bgColor : "white"}
+                                    title={RatingAfterReview(selectedCustomerRisk, CalcReviewValue(selectedReview))}
+                                />}
+
                         </Col>
                         <Col span={24}>
                             <h3 className=" h3 gx-text-capitalize gx-fs-l gx-font-weight-bold gx-text-geekblue">
@@ -208,6 +221,7 @@ const CalcReviewValue = (profiler) =>
     profiler.reduce((a, c) => (a + (parseFloat(c.review_value))), 0)
 
 const RatingCheck = (arrayList, value) => arrayList.find(item => parseInt(value) > parseInt(item.rating_lower) && parseInt(value) <= parseInt(item.rating_upper))
+const AverageRating = (total, count) => count ? (total / count).toFixed(2) : 0
 
 const RatingAfterReview = (riskvalue, reviewvalue) => NotZero(riskvalue) - NotZero(reviewvalue)
 const NotZero = value => value ? value : 0

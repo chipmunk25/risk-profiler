@@ -6,7 +6,7 @@ import {
     getDescriptionFromApi, CreateDescription, ChangeDescription, RemoveDescription,
     getCustomerProfilerFromApi, CreateCustomerProfiler, ChangeCustomerProfiler, RemoveCustomerProfiler,
     getCustomerProfilerSummaryFromApi, RemoveReview, ChangeReview, CreateReview, getReviewFromApi,
-    RemoveCustomerReview, ChangeCustomerReview, CreateCustomerReview, getCustomerReviewFromApi,
+    RemoveCustomerReview, ChangeCustomerReview, CreateCustomerReview, getCustomerReviewFromApi, getOneCustomerProfilerFromApi,
 } from "../api/indicator"
 
 import {
@@ -16,7 +16,7 @@ import {
     successGetDescription, successSaveDescription, successUpdateDescription, successDeleteDescription,
     successDeleteProfiler, successUpdateProfiler, successSaveProfiler, successGetProfiler, successGetProfilerSummary,
     successDeleteReview, successUpdateReview, successSaveReview, successGetReview,
-    successDeleteCustomerReview, successUpdateCustomerReview, successSaveCustomerReview, successGetCustomerReview,
+    successDeleteCustomerReview, successUpdateCustomerReview, successSaveCustomerReview, successGetCustomerReview, successGetCustomerProfiler,
 } from "../Actions/indicator"
 import {
     REQUEST_GET_INDICATORTYPE, REQUEST_SAVE_INDICATORTYPE, REQUEST_UPDATE_INDICATORTYPE, REQUEST_DELETE_INDICATORTYPE,
@@ -25,7 +25,7 @@ import {
     REQUEST_GET_DESCRIPTION, REQUEST_SAVE_DESCRIPTION, REQUEST_UPDATE_DESCRIPTION, REQUEST_DELETE_DESCRIPTION,
     REQUEST_DELETE_PROFILER, REQUEST_UPDATE_PROFILER, REQUEST_SAVE_PROFILER, REQUEST_GET_PROFILER,
     REQUEST_GET_PROFILERSUMMARY, REQUEST_DELETE_REVIEW, REQUEST_UPDATE_REVIEW, REQUEST_SAVE_REVIEW, REQUEST_GET_REVIEW,
-    REQUEST_DELETE_CUSTOMERREVIEW, REQUEST_UPDATE_CUSTOMERREVIEW, REQUEST_SAVE_CUSTOMERREVIEW, REQUEST_GET_CUSTOMERREVIEW
+    REQUEST_DELETE_CUSTOMERREVIEW, REQUEST_UPDATE_CUSTOMERREVIEW, REQUEST_SAVE_CUSTOMERREVIEW, REQUEST_GET_CUSTOMERREVIEW, REQUEST_GET_CUSTOMER_PROFILER
 } from "../Actions/constants"
 
 
@@ -368,6 +368,20 @@ function* GetCustomerProfilerHandler({ payload }) {
     }
 }
 
+function* GetOneCustomerProfilerHandler({ payload }) {
+    let indicator;
+
+    indicator = yield call(getOneCustomerProfilerFromApi, sessionStorage.getItem('token'), payload)
+    console.log(indicator)
+    yield put(hideAuthLoader())
+    if (indicator.status === 200) {
+        yield put(successGetCustomerProfiler({ customerProfiler: indicator.data.indicators }))
+    }
+    else {
+        openNotificationWithIcon('error', 'Error', indicator.error)
+    }
+}
+
 function* GetCustomerProfilerSummaryHandler({ payload }) {
     let indicator;
 
@@ -429,6 +443,7 @@ function* LoadWatchers() {
     yield takeEvery(REQUEST_GET_INDICATORMAPPING, GetIndicatorMappingHandler)
     yield takeEvery(REQUEST_GET_INDICATOR, GetIndicatorHandler)
     yield takeEvery(REQUEST_GET_PROFILER, GetCustomerProfilerHandler)
+    yield takeEvery(REQUEST_GET_CUSTOMER_PROFILER, GetOneCustomerProfilerHandler)
     yield takeEvery(REQUEST_GET_PROFILERSUMMARY, GetCustomerProfilerSummaryHandler)
 }
 
