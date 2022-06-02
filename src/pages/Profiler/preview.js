@@ -7,8 +7,10 @@ import { useSelector } from "react-redux";
 const PrintPreview = ({ customerInfo, fullname, printData, CloseModal }) => {
   // console.log(printData,fullname)
   const { customerProfiler } = useSelector(({ indicators }) => indicators);
+  const { statusLists, } = useSelector(({ statuses }) => statuses);
+
   const componentRef = useRef();
-  console.log(customerProfiler);
+  // console.log(customerProfiler);
   return (
     <div>
       <ReactToPrint
@@ -18,7 +20,7 @@ const PrintPreview = ({ customerInfo, fullname, printData, CloseModal }) => {
               type="primary"
               id="printInvoice"
               className="btn btn-info"
-              disabled={!printData}
+              // disabled={!printData}
             >
               <PrinterOutlined /> Print
             </Button>
@@ -29,6 +31,7 @@ const PrintPreview = ({ customerInfo, fullname, printData, CloseModal }) => {
       />
 
       <CustomerProfilerReport
+        statusLists={statusLists}
         customerInfo={customerInfo}
         fullname={fullname}
         details={customerProfiler}

@@ -399,13 +399,17 @@ function* GetCustomerProfilerSummaryHandler({ payload }) {
 function* SaveCustomerProfilerHandler({ payload }) {
     const indicators = yield call(CreateCustomerProfiler, sessionStorage.getItem('token'), payload)
     yield put(hideAuthLoader())
-    yield put(hideModal())
+    // yield put(hideModal())
     if (indicators.status === 201) {
         yield put(successSaveProfiler(indicators.data.profilers))
         const cust = {
             del_flg: 0, company_id: payload.customer.company_id, customer_no: payload.customer_no
         }
-        yield call(getOneCustomerProfilerFromApi, sessionStorage.getItem('token'), cust)
+        console.log(cust)
+        const prof = yield call(getOneCustomerProfilerFromApi, sessionStorage.getItem('token'), cust)
+        if (prof.status === 200) {
+            yield put(successGetCustomerProfiler({ customerProfiler: prof.data.indicators }))
+        }
         openNotificationWithIcon("success", 'Success', 'Record Saved Successfully')
     }
     else {

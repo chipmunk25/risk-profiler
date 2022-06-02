@@ -145,6 +145,7 @@ const CustomerProfiler = () => {
         const finaldata = { profiler: data, customer: custdata, customer_no: record.customer_no }
         dispatch(showAuthLoader())
         dispatch(requestSaveProfiler(finaldata))
+        
         dispatch(requestGetCustomerProfiler({ del_flg: 0, company_id: user.company_id, customer_no: record.customer_no }))
         // console.log(finaldata, record)
         LoadNShowModal()
