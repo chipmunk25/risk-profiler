@@ -20,14 +20,14 @@ const PrintPreview = ({ customerInfo, fullname, printData, CloseModal }) => {
               type="primary"
               id="printInvoice"
               className="btn btn-info"
-              // disabled={!printData}
+            // disabled={!printData}
             >
               <PrinterOutlined /> Print
             </Button>
           </div>
         )}
         content={() => componentRef.current}
-        // onAfterPrint={() => CloseModal()}
+        onAfterPrint={() => CloseModal()}
       />
 
       <CustomerProfilerReport

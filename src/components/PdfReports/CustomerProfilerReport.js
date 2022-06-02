@@ -10,7 +10,7 @@ export default class CustomerProfilerReport extends Component {
                 <div style={{ padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <h1>La Community Bank LTD</h1>
                 </div>
-                <div style={{ padding: 20 }}>
+                <div style={{ padding: 20, fontSize: 17 }}>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', }}>
                         <span style={{ paddingLeft: '20px' }}><strong>Customer No:</strong> {customerInfo.customer_no}</span>
                         <span><strong>Customer Account:</strong> {customerInfo.account_no} </span>
@@ -20,14 +20,14 @@ export default class CustomerProfilerReport extends Component {
                         <span><strong>Telephone:</strong> {customerInfo.telephone} </span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <span style={{ paddingLeft: '20px' }}><strong>Source of Funds:</strong>{customerInfo.sourceof_funds}</span>
-                        <span><strong>Email:</strong>{customerInfo.email}</span>
+                        <span style={{ paddingLeft: '20px' }}><strong>Source of Funds:</strong> {customerInfo.sourceof_funds}</span>
+                        <span><strong>Email:</strong> {customerInfo.email}</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <span style={{ paddingLeft: '20px' }}><strong>Address:</strong>{customerInfo.address}</span>
+                        <span style={{ paddingLeft: '20px' }}><strong>Address:</strong> {customerInfo.address}</span>
                     </div>
                 </div>
-                <div style={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <h3>Customer Profiler Report</h3>
                 </div>
                 <div>
@@ -45,7 +45,7 @@ export default class CustomerProfilerReport extends Component {
                                     <tr key={index}>
                                         <td>{item.indicator_m.indicator}</td>
                                         <td>{item.indicator_description_m?.description}</td>
-                                        <td>{item.description_value}</td>
+                                        <td className="item-qty">{item.description_value}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -69,6 +69,8 @@ export default class CustomerProfilerReport extends Component {
                     <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', paddingTop: 80, paddingLeft: 20, paddingRight: 20 }}>
 
                         <div style={{ borderBottom: '1px solid black', width: 200, }}>
+
+                        </div> <div style={{ borderBottom: '1px solid black', width: 200, }}>
 
                         </div>
 
